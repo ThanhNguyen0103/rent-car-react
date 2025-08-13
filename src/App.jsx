@@ -4,6 +4,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import "./style/global.css";
 import { ConfigProvider } from "antd";
 import viVN from "antd/locale/vi_VN";
+import { UserPage } from "./pages/admin/user";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/user",
-        element: <div>user </div>,
+        element: <UserPage />,
       },
     ],
   },

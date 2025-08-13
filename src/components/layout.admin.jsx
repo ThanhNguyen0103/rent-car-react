@@ -21,7 +21,6 @@ export const LayoutAdmin = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   const onClick = (e) => {
-    console.log("click ", e);
     setCurrent(e.key);
   };
   const itemsMenu = [
