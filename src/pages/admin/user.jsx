@@ -1,104 +1,57 @@
-import { Button, Form, Input, Modal, Space, Table, Tag } from "antd";
+import { Button, Form, Input, message, Modal, Space, Table, Tag } from "antd";
 import {
+  callDeleteUser,
   callGetUser,
   callGetUserById,
   callUpdateUser,
 } from "../../service/service-api";
 import { useEffect, useState } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import UserTable from "../../components/admin/user-table";
 
 export const UserPage = () => {
-  const [form] = Form.useForm();
-  const [formLayout, setFormLayout] = useState("horizontal");
   const [data, setData] = useState();
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-  const showModal = (value) => {
-    setIsModalOpen(true);
-    form.setFieldsValue(value);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-    handleUpdateUser(form.getFieldsValue());
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  useEffect(() => {
-    handleGetUser();
-  }, []);
+  const [reload, setReload] = useState(false);
   const handleUpdateUser = async (value) => {
     const res = await callUpdateUser(value);
+    if (res.data) {
+      message.success("Cập nhật user thành công");
+    } else {
+      notification.error({
+        message: "Có lỗi xảy ra",
+        description: res.message,
+      });
+    }
+    setReload((prev) => !prev);
   };
-  const handleGetUser = async (id) => {
-    const res = await callGetUser();
-    setData(res.data.result);
-  };
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "fullName",
-      key: "name",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
+  const handleGetUser = async (params, sort, filter) => {
+    let page = params.current;
+    let size = params.pageSize;
 
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <EditOutlined
-            onClick={() => {
-              showModal(record);
-            }}
-          />
-          <DeleteOutlined style={{ color: "red", fontSize: 16 }} />
-        </Space>
-      ),
-    },
-  ];
+    // let sortField = Object.keys(sort)[0];
+    // let sortOrder = sort[sortField] === "ascend" ? "asc" : "desc";
+    // console.log(sortOrder);
+
+    const query = `page=${page}&size=${size}`;
+    const res = await callGetUser(query);
+    if (res.data && res.data.result) {
+      setData(res.data.result);
+    }
+    return res.data;
+  };
+  const handleDeleteUser = async (id) => {
+    const res = await callDeleteUser(id);
+    message.success("Xóa user thành công ");
+    setReload((prev) => !prev);
+  };
 
   return (
-    <>
-      <Table columns={columns} rowKey="id" dataSource={data} />
-      <Modal
-        title="Basic Modal"
-        closable={{ "aria-label": "Custom Close Button" }}
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Form
-          layout={formLayout}
-          //   setFieldsValue={(record) => {
-          //     console.log(record);
-          //   }}
-          form={form}
-          onFinish={onFinish}
-          initialValues={{ layout: formLayout }}
-          style={{ maxWidth: formLayout === "inline" ? "none" : 600 }}
-        >
-          <Form.Item label="Full Name" name="fullName">
-            <Input placeholder="Nhập tên " />
-          </Form.Item>
-          <Form.Item label="ID" name="id">
-            <Input placeholder="input placeholder" />
-          </Form.Item>
-        </Form>
-      </Modal>
-    </>
+    <UserTable
+      data={data}
+      handleUpdateUser={handleUpdateUser}
+      handleDeleteUser={handleDeleteUser}
+      handleGetUser={handleGetUser}
+      setReload={setReload}
+    />
   );
 };

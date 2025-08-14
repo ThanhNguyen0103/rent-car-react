@@ -28,7 +28,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/user",
-        element: <UserPage />,
+        element: (
+          <ConfigProvider locale={viVN}>
+            <UserPage />
+          </ConfigProvider>
+        ),
       },
     ],
   },
