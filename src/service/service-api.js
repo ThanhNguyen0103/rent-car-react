@@ -1,8 +1,8 @@
 import instance from "./service-api-custom";
 
 // module user
-export const callCreateUser = (name, address, description, age) => {
-  return instance.post("/api/v1/users", { name, address, age, description });
+export const callCreateUser = (value) => {
+  return instance.post("/api/v1/users", value);
 };
 export const callUpdateUser = (value) => {
   return instance.put("/api/v1/users", value);

@@ -1,17 +1,17 @@
-import { Button, Form, Input, message, Modal, Space, Table, Tag } from "antd";
+import { message } from "antd";
 import {
+  callCreateUser,
   callDeleteUser,
   callGetUser,
   callGetUserById,
   callUpdateUser,
 } from "../../service/service-api";
-import { useEffect, useState } from "react";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { useState } from "react";
+
 import UserTable from "../../components/admin/user-table";
 
 export const UserPage = () => {
   const [data, setData] = useState();
-  const [reload, setReload] = useState(false);
   const handleUpdateUser = async (value) => {
     const res = await callUpdateUser(value);
     if (res.data) {
@@ -22,17 +22,28 @@ export const UserPage = () => {
         description: res.message,
       });
     }
-    setReload((prev) => !prev);
   };
   const handleGetUser = async (params, sort, filter) => {
     let page = params.current;
     let size = params.pageSize;
+    let sortField = Object.keys(sort)[0];
+    let sortOrder = "";
 
-    // let sortField = Object.keys(sort)[0];
-    // let sortOrder = sort[sortField] === "ascend" ? "asc" : "desc";
-    // console.log(sortOrder);
+    if (sortField === "fullName") {
+      sortOrder =
+        sort[sortField] === "ascend"
+          ? "&sort=fullName,asc"
+          : "&sort=fullName,desc";
+    }
+    if (sortField === "createdAt") {
+      sortOrder =
+        sort[sortField] === "ascend"
+          ? "&sort=createdAt,asc"
+          : "&sort=createdAt,desc";
+    }
 
-    const query = `page=${page}&size=${size}`;
+    let query = `page=${page}&size=${size}${sortOrder}`;
+
     const res = await callGetUser(query);
     if (res.data && res.data.result) {
       setData(res.data.result);
@@ -42,16 +53,31 @@ export const UserPage = () => {
   const handleDeleteUser = async (id) => {
     const res = await callDeleteUser(id);
     message.success("Xóa user thành công ");
-    setReload((prev) => !prev);
+  };
+  const handleCreateUser = async (value) => {
+    const res = await callCreateUser(value);
+    if (res.data) {
+      message.success("tạo user thành công");
+    } else {
+      notification.error({
+        message: "Có lỗi xảy ra",
+        description: res.message,
+      });
+    }
+  };
+  const handleGetUserById = async (id) => {
+    const res = await callGetUserById(id);
+    console.log(res.data);
   };
 
   return (
     <UserTable
-      data={data}
+      // data={data}
       handleUpdateUser={handleUpdateUser}
       handleDeleteUser={handleDeleteUser}
       handleGetUser={handleGetUser}
-      setReload={setReload}
+      handleCreateUser={handleCreateUser}
+      handleGetUserById={handleGetUserById}
     />
   );
 };

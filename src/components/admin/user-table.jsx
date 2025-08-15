@@ -1,45 +1,57 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import ProTable from "@ant-design/pro-table";
 import {
   Button,
-  Dropdown,
+  Col,
+  Drawer,
   Form,
   Input,
-  message,
   Modal,
   Popconfirm,
+  Row,
+  Select,
   Space,
-  Table,
 } from "antd";
 import { useRef, useState } from "react";
 
 const UserTable = ({
-  data,
   handleUpdateUser,
   handleDeleteUser,
   handleGetUser,
+  handleCreateUser,
+  handleGetUserById,
 }) => {
   const actionRef = useRef();
   const [form] = Form.useForm();
-  const [formLayout, setFormLayout] = useState("horizontal");
+  const [formLayout, setFormLayout] = useState("vertical");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [typeSubmit, setTypeSubmit] = useState("");
+  // --------------//
+  const handleSubmit = async () => {
+    if (typeSubmit == "update") {
+      form.validateFields();
+      await handleUpdateUser(form.getFieldsValue());
+      setIsModalOpen(false);
+      actionRef.current.reload();
+    } else {
+      form.validateFields();
+      await handleCreateUser(form.getFieldsValue());
+      setIsModalOpen(false);
+      actionRef.current.reload();
+    }
+  };
+
   const onFinish = (values) => {
     console.log("Success:", values);
   };
-  const showModal = (value) => {
+  const showModal = (record) => {
     form.resetFields();
     setIsModalOpen(true);
-    form.setFieldsValue(value);
+    form.setFieldsValue(record);
   };
-  const handleOk = async () => {
-    setIsModalOpen(false);
-    await handleUpdateUser(form.getFieldsValue());
-    actionRef.current.reload();
+
+  const handleOk = () => {
+    handleSubmit();
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -53,14 +65,32 @@ const UserTable = ({
     console.log(e);
     // message.error("Click on No");
   };
-
+  const [open, setOpen] = useState(false);
+  const showDrawer = (id) => {
+    setOpen(true);
+    handleGetUserById(id);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   const columns = [
     {
       title: "STT",
       dataIndex: "id",
+      render: (id) => (
+        <a
+          onClick={() => {
+            showDrawer(id);
+          }}
+        >
+          {id}
+        </a>
+      ),
+
       key: "id",
       width: 50,
       hideInSearch: true,
+      align: "center",
     },
     {
       title: "Name",
@@ -72,7 +102,7 @@ const UserTable = ({
     {
       title: "Address",
       dataIndex: "address",
-      key: "address",
+      key: "Address",
       width: 200,
     },
     {
@@ -81,6 +111,7 @@ const UserTable = ({
       key: "age",
       width: 50,
       sorter: true,
+      align: "center",
     },
 
     {
@@ -111,6 +142,7 @@ const UserTable = ({
             style={{ fontSize: 20, color: "rgb(255, 165, 0)" }}
             onClick={() => {
               showModal(record);
+              setTypeSubmit("update");
             }}
           />
 
@@ -191,7 +223,10 @@ const UserTable = ({
           <Button
             key="button"
             icon={<PlusOutlined />}
-            onClick={() => {}}
+            onClick={() => {
+              showModal();
+              setTypeSubmit("create");
+            }}
             type="primary"
           >
             Thêm mới
@@ -199,57 +234,201 @@ const UserTable = ({
         ]}
       />
       <Modal
-        title="Basic Modal"
+        title={typeSubmit == "create" ? "Tạo mới User" : "Update User"}
         closable={{ "aria-label": "Custom Close Button" }}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        width={900}
+        okText={typeSubmit == "create" ? "Create" : "Update"}
+        cancelText="Cancel"
       >
-        <Form
-          layout={formLayout}
-          form={form}
-          onFinish={onFinish}
-          initialValues={{ layout: formLayout }}
-          style={{ maxWidth: formLayout === "inline" ? "none" : 600 }}
-        >
-          <Form.Item label="Full Name" name="fullName">
-            <Input placeholder="Nhập tên " />
-          </Form.Item>
-          <Form.Item label="ID" name="id">
-            <Input placeholder="input placeholder" />
-          </Form.Item>
-        </Form>
+        {typeSubmit === "update" && (
+          <Form
+            layout={formLayout}
+            form={form}
+            onFinish={onFinish}
+            initialValues={{ layout: formLayout }}
+            style={{ w: formLayout === "inline" ? "none" : 1000 }}
+          >
+            <Row gutter={16}>
+              <Col lg={12} md={12} sm={24} xs={24}>
+                <Form.Item
+                  rules={[
+                    { required: true, message: "Vui lòng nhập email" },
+                    { type: "email", message: "Email không hợp lệ" },
+                  ]}
+                  label="Email"
+                  name="email"
+                >
+                  <Input disabled placeholder="Nhập email  " />
+                </Form.Item>
+              </Col>
+
+              <Col lg={6} md={6} sm={12} xs={12}>
+                <Form.Item
+                  rules={[{ required: true, message: "Vui lòng nhập tên" }]}
+                  label="Tên hiển thị"
+                  name="fullName"
+                >
+                  <Input id="modal-name" placeholder="Nhập tên hiển thị" />
+                </Form.Item>
+              </Col>
+              <Col lg={6} md={6} sm={12} xs={12}>
+                <Form.Item
+                  rules={[{ required: true, message: "Vui lòng nhập tuổi" }]}
+                  label="Tuổi"
+                  name="age"
+                >
+                  <Input id="modal-age" placeholder="Nhập tuổi" />
+                </Form.Item>
+              </Col>
+              <Col lg={6} md={6} sm={12} xs={12}>
+                <Form.Item
+                  rules={[
+                    { required: true, message: "Vui lòng chọn giới tính" },
+                  ]}
+                  label="Giới tính"
+                  name="gender"
+                >
+                  <Select placeholder="Chọn giới tính">
+                    <Select.Option value="FEMALE">Female</Select.Option>
+                    <Select.Option value="MALE">Male</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+
+              <Col lg={6} md={6} sm={12} xs={12}>
+                <Form.Item
+                  rules={[{ required: true, message: "Vui lòng chọn vai trò" }]}
+                  label="Vai trò"
+                  name={["role", "id"]}
+                >
+                  <Select placeholder="Chọn vai trò">
+                    <Select.Option value={1}>Admin</Select.Option>
+                    <Select.Option value={2}>User</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col lg={12} md={12} sm={24} xs={24}>
+                <Form.Item
+                  rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
+                  label="Địa chỉ"
+                  name="address"
+                >
+                  <Input placeholder="Nhập địa chỉ" />
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item label="ID" name="id" hidden>
+                  <Input disabled />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        )}
+        {typeSubmit === "create" && (
+          <Form
+            layout={formLayout}
+            form={form}
+            onFinish={onFinish}
+            initialValues={{ layout: formLayout }}
+            style={{ w: formLayout === "inline" ? "none" : 1000 }}
+          >
+            <Row gutter={16}>
+              <Col lg={12} md={12} sm={24} xs={24}>
+                <Form.Item
+                  rules={[
+                    { required: true, message: "Vui lòng nhập email" },
+                    { type: "email", message: "Email không hợp lệ" },
+                  ]}
+                  label="Email"
+                  name="email"
+                >
+                  <Input placeholder="Nhập email  " />
+                </Form.Item>
+              </Col>
+              <Col lg={12} md={12} sm={24} xs={24}>
+                <Form.Item
+                  rules={[
+                    { required: true, message: "Vui lòng nhập password" },
+                  ]}
+                  label="Password"
+                  name="password"
+                >
+                  <Input.Password placeholder="Nhập password" />
+                </Form.Item>
+              </Col>
+              <Col lg={6} md={6} sm={12} xs={12}>
+                <Form.Item
+                  rules={[{ required: true, message: "Vui lòng nhập tên" }]}
+                  label="Tên hiển thị"
+                  name="fullName"
+                >
+                  <Input id="modal-name" placeholder="Nhập tên hiển thị" />
+                </Form.Item>
+              </Col>
+              <Col lg={6} md={6} sm={12} xs={12}>
+                <Form.Item
+                  rules={[{ required: true, message: "Vui lòng nhập tuổi" }]}
+                  label="Tuổi"
+                  name="age"
+                >
+                  <Input id="modal-age" placeholder="Nhập tuổi" />
+                </Form.Item>
+              </Col>
+              <Col lg={6} md={6} sm={12} xs={12}>
+                <Form.Item
+                  rules={[
+                    { required: true, message: "Vui lòng chọn giới tính" },
+                  ]}
+                  label="Giới tính"
+                  name="gender"
+                >
+                  <Select placeholder="Chọn giới tính">
+                    <Select.Option value="FEMALE">Female</Select.Option>
+                    <Select.Option value="MALE">Male</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+
+              <Col lg={6} md={6} sm={12} xs={12}>
+                <Form.Item
+                  rules={[{ required: true, message: "Vui lòng chọn vai trò" }]}
+                  label="Vai trò"
+                  name={["role", "id"]}
+                >
+                  <Select placeholder="Chọn vai trò">
+                    <Select.Option value={1}>Admin</Select.Option>
+                    <Select.Option value={2}>User</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col lg={12} md={12} sm={24} xs={24}>
+                <Form.Item
+                  rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
+                  label="Địa chỉ"
+                  name="address"
+                >
+                  <Input placeholder="Nhập địa chỉ" />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        )}
       </Modal>
+
+      <Drawer
+        title="Basic Drawer"
+        closable={{ "aria-label": "Close Button" }}
+        onClose={onClose}
+        open={open}
+      >
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Drawer>
     </>
   );
-  // return (
-  //   <>
-
-  //     <Table columns={columns} rowKey="id" dataSource={data} />
-  //     <Modal
-  //       title="Basic Modal"
-  //       closable={{ "aria-label": "Custom Close Button" }}
-  //       open={isModalOpen}
-  //       onOk={handleOk}
-  //       onCancel={handleCancel}
-  //     >
-  //       <Form
-  //         layout={formLayout}
-  //         form={form}
-  //         onFinish={onFinish}
-  //         initialValues={{ layout: formLayout }}
-  //         style={{ maxWidth: formLayout === "inline" ? "none" : 600 }}
-  //       >
-  //         <Form.Item label="Full Name" name="fullName">
-  //           <Input placeholder="Nhập tên " />
-  //         </Form.Item>
-  //         <Form.Item label="ID" name="id">
-  //           <Input placeholder="input placeholder" />
-  //         </Form.Item>
-  //       </Form>
-  //     </Modal>
-
-  //   </>
-  // );
 };
 export default UserTable;
