@@ -5,6 +5,7 @@ import "./style/global.css";
 import { ConfigProvider } from "antd";
 import viVN from "antd/locale/vi_VN";
 import { UserPage } from "./pages/admin/user";
+import CarTabs from "./pages/admin/car/car-tabs";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,8 +24,12 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/admin/product",
-        element: <div>product </div>,
+        path: "/admin/car",
+        element: (
+          <ConfigProvider locale={viVN}>
+            <CarTabs />
+          </ConfigProvider>
+        ),
       },
       {
         path: "/admin/user",

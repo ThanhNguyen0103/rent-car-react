@@ -6,6 +6,7 @@ import {
   Drawer,
   Form,
   Input,
+  message,
   Modal,
   Popconfirm,
   Row,
@@ -28,16 +29,28 @@ const UserTable = ({
   const [typeSubmit, setTypeSubmit] = useState("");
   // --------------//
   const handleSubmit = async () => {
-    if (typeSubmit == "update") {
-      form.validateFields();
-      await handleUpdateUser(form.getFieldsValue());
-      setIsModalOpen(false);
-      actionRef.current.reload();
-    } else {
-      form.validateFields();
-      await handleCreateUser(form.getFieldsValue());
-      setIsModalOpen(false);
-      actionRef.current.reload();
+    try {
+      if (typeSubmit == "update") {
+        form.validateFields();
+        await handleUpdateUser(form.getFieldsValue());
+
+        setIsModalOpen(false);
+        actionRef.current.reload();
+      } else {
+        form.validateFields();
+        await handleCreateUser(form.getFieldsValue());
+        setIsModalOpen(false);
+        actionRef.current.reload();
+      }
+    } catch (error) {
+      message.error(error.message);
+      console.log(error.error);
+      const fields = Object.entries(error.error).map(([key, value]) => ({
+        name: key,
+        errors: [value],
+      }));
+      console.log(fields);
+      form.setFields(fields);
     }
   };
 
@@ -50,9 +63,6 @@ const UserTable = ({
     form.setFieldsValue(record);
   };
 
-  const handleOk = () => {
-    handleSubmit();
-  };
   const handleCancel = () => {
     setIsModalOpen(false);
     form.resetFields();
@@ -100,9 +110,9 @@ const UserTable = ({
       width: 150,
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "Address",
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
       width: 200,
     },
     {
@@ -112,6 +122,14 @@ const UserTable = ({
       width: 50,
       sorter: true,
       align: "center",
+    },
+    {
+      title: "Role",
+      dataIndex: ["role", "name"],
+      key: "role",
+      width: 50,
+      align: "center",
+      hideInSearch: true,
     },
 
     {
@@ -214,7 +232,7 @@ const UserTable = ({
           },
         }}
         pagination={{
-          pageSize: 5,
+          pageSize: 10,
           // onChange: (page) => console.log(page),
         }}
         dateFormatter="string"
@@ -237,11 +255,11 @@ const UserTable = ({
         title={typeSubmit == "create" ? "Tạo mới User" : "Update User"}
         closable={{ "aria-label": "Custom Close Button" }}
         open={isModalOpen}
-        onOk={handleOk}
+        onOk={handleSubmit}
         onCancel={handleCancel}
         width={900}
-        okText={typeSubmit == "create" ? "Create" : "Update"}
-        cancelText="Cancel"
+        okText={typeSubmit == "create" ? "Tạo mới" : "Cập nhật"}
+        cancelText="Hủy"
       >
         {typeSubmit === "update" && (
           <Form
@@ -267,7 +285,14 @@ const UserTable = ({
 
               <Col lg={6} md={6} sm={12} xs={12}>
                 <Form.Item
-                  rules={[{ required: true, message: "Vui lòng nhập tên" }]}
+                  rules={[
+                    { required: true, message: "Vui lòng nhập tên" },
+                    {
+                      type: "string",
+                      min: 6,
+                      message: "Tên phải có ít nhất 6 ký tự",
+                    },
+                  ]}
                   label="Tên hiển thị"
                   name="fullName"
                 >
@@ -276,7 +301,20 @@ const UserTable = ({
               </Col>
               <Col lg={6} md={6} sm={12} xs={12}>
                 <Form.Item
-                  rules={[{ required: true, message: "Vui lòng nhập tuổi" }]}
+                  rules={[
+                    { required: true, message: "Vui lòng nhập tuổi" },
+                    {
+                      type: "number",
+                      min: 18,
+                      max: 99,
+                      message: "Tuổi từ 18 đến 99",
+                    },
+                    // {
+                    //   min: 18,
+                    //   max: 99,
+                    //   message: "Tuổi từ 18 đến 99",
+                    // },
+                  ]}
                   label="Tuổi"
                   name="age"
                 >

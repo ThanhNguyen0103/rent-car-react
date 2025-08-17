@@ -1,0 +1,22 @@
+.car-form .ant-form-item {
+  margin-bottom: 16px; /* khoảng cách giữa các item */
+}
+
+.car-form .ant-form-item-label > label {
+  font-weight: 600;
+  color: #333;
+}
+
+.car-form .ant-input,
+.car-form .ant-select-selector,
+.car-form .ant-input-number,
+.car-form .ant-upload,
+.car-form .ant-picker {
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+.car-form .ant-upload-select {
+  width: 120px !important;
+  height: 120px !important;
+}

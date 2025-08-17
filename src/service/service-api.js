@@ -17,3 +17,42 @@ export const callGetUser = (query) => {
   return instance.get(`/api/v1/users?${query}`);
   // return instance.get(`/api/v1/users`);
 };
+// --- module car
+export const callCreateCar = (formData) => {
+  return instance.post("/api/v1/cars", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
+export const callUpdateCar = (formData) => {
+  return instance.put("/api/v1/cars", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+export const callDeleteCar = (id) => {
+  return instance.delete(`/api/v1/cars/${id}`);
+};
+export const callGetCarById = (id) => {
+  return instance.get(`/api/v1/cars/${id}`);
+};
+export const callGetCar = (query) => {
+  return instance.get(`/api/v1/cars?${query}`);
+  // return instance.get(`/api/v1/users`);
+};
+// module car-model
+export const callCreateCarModel = (value) => {
+  return instance.post("/api/v1/car-models", value);
+};
+export const callUpdateCarModel = (value) => {
+  return instance.put("/api/v1/car-models", value);
+};
+export const callDeleteCarModel = (id) => {
+  return instance.delete(`/api/v1/car-models/${id}`);
+};
+export const callGetCarModelById = (id) => {
+  return instance.get(`/api/v1/car-models/${id}`);
+};
+export const callGetCarModel = (query) => {
+  return instance.get(`/api/v1/car-models?${query}`);
+  // return instance.get(`/api/v1/users`);
+};

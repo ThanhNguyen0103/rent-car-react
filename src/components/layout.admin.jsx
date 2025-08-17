@@ -1,6 +1,7 @@
 import {
   AppstoreOutlined,
   BugOutlined,
+  CarOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   ScheduleOutlined,
@@ -30,9 +31,9 @@ export const LayoutAdmin = () => {
       icon: <AppstoreOutlined />,
     },
     {
-      label: <Link to="/admin/product">Product</Link>,
-      key: "/admin/product",
-      icon: <ScheduleOutlined />,
+      label: <Link to="/admin/car">Car</Link>,
+      key: "/admin/car",
+      icon: <CarOutlined />,
     },
     {
       label: <Link to="/admin/user">User</Link>,
