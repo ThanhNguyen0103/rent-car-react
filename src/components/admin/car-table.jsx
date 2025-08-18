@@ -25,6 +25,7 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import { use, useEffect } from "react";
 import { useRef, useState } from "react";
+import { callUpLoadFile } from "../../service/service-api";
 const CarTable = ({
   handleUpdateCar,
   handleDeleteCar,
@@ -123,8 +124,8 @@ const CarTable = ({
           <EditOutlined
             style={{ fontSize: 20, color: "rgb(255, 165, 0)" }}
             onClick={() => {
-              showModal(record);
               setTypeSubmit("update");
+              showModal(record);
             }}
           />
 
@@ -152,15 +153,15 @@ const CarTable = ({
   const showModal = (record) => {
     formSubmit.resetFields();
     setIsModalOpen(true);
-    formSubmit.setFieldsValue(record);
-    if (record.carImages) {
+
+    if (record && record.carImages) {
+      formSubmit.setFieldsValue(record);
       const files = record.carImages.map((img) => ({
         uid: img.id,
         name: `image-1755443134509-1716687909879-google.png`,
         status: "done",
         url: `http://localhost:8080/storage/car_images/${img.url}`,
       }));
-      console.log(files);
       setListFile(files);
     }
   };
@@ -197,12 +198,21 @@ const CarTable = ({
       formSubmit.validateFields();
       const values = await formSubmit.getFieldsValue();
 
+      let oldFiles = [];
+      if (values && values.upload) {
+        oldFiles = values.upload.fileList
+          .filter((item) => !item.originFileObj)
+          .map((item) => ({ id: item.uid }));
+      }
+
       const car = {
+        ...(values.id ? { id: values.id } : {}),
         description: values.description,
         price: values.price,
         capacity: values.capacity,
         available: values.available,
         carModel: { id: values.carModel.id },
+        carImages: oldFiles,
       };
 
       // Tạo FormData
@@ -220,10 +230,18 @@ const CarTable = ({
       }
 
       if (typeSubmit == "update") {
-        // await handleUpdateCar(formSubmit.getFieldsValue());
-        // setIsModalOpen(false);
-        // actionRef.current.reload();
+        if (values.upload && values.upload.fileList) {
+          values.upload.fileList.forEach((file) => {
+            if (file.originFileObj) {
+              formData.append("files", file.originFileObj);
+            }
+          });
+        }
+        await handleUpdateCar(formData);
+        setIsModalOpen(false);
+        actionRef.current.reload();
       } else {
+        console.log(values.upload);
         await handleCreateCar(formData);
         setIsModalOpen(false);
         actionRef.current.reload();
@@ -302,8 +320,8 @@ const CarTable = ({
             key="button"
             icon={<PlusOutlined />}
             onClick={() => {
-              showModal();
               setTypeSubmit("create");
+              showModal();
             }}
             type="primary"
           >
@@ -568,15 +586,13 @@ const CarTable = ({
               <TextArea rows={3} placeholder="Ví dụ: Xe mới, sạch sẽ..." />
             </Form.Item>
 
-            <Form.Item
-              label="Upload ảnh"
-              name="upload"
-              // valuePropName="fileList"
-              // getValueFromEvent={normFile}
-            >
+            <Form.Item label="Upload ảnh" name="upload">
               <Upload
                 fileList={listFile}
-                onChange={({ fileList }) => setListFile(fileList)}
+                onChange={({ fileList }) => {
+                  console.log(fileList);
+                  setListFile(fileList);
+                }}
                 listType="picture-card"
                 beforeUpload={() => false}
               >
@@ -584,6 +600,11 @@ const CarTable = ({
                 <div style={{ marginLeft: 4 }}>Upload</div>
               </Upload>
             </Form.Item>
+            <Col span={12}>
+              <Form.Item label="Id" name="id">
+                <Input placeholder="Ví dụ: 16 chỗ" />
+              </Form.Item>
+            </Col>
           </Form>
         )}
       </Modal>

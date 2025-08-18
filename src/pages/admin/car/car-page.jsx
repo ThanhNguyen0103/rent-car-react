@@ -35,7 +35,7 @@ const CarPage = () => {
   const handleUpdateCar = async (value) => {
     const res = await callUpdateCar(value);
     if (res.data) {
-      message.success("Cập nhật car thành công");
+      message.success("Cập nhật xe thành công");
     } else {
       notification.error({
         message: "Có lỗi xảy ra",

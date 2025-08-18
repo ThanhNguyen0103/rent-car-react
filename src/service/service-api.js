@@ -56,3 +56,8 @@ export const callGetCarModel = (query) => {
   return instance.get(`/api/v1/car-models?${query}`);
   // return instance.get(`/api/v1/users`);
 };
+export const callUpLoadFile = (formData) => {
+  return instance.post("/files/upload", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
