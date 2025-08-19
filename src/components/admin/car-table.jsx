@@ -10,7 +10,10 @@ import ProTable from "@ant-design/pro-table";
 import {
   Button,
   Col,
+  Descriptions,
+  Drawer,
   Form,
+  Image,
   Input,
   InputNumber,
   message,
@@ -23,14 +26,15 @@ import {
   Upload,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import { useRef, useState } from "react";
-import { callUpLoadFile } from "../../service/service-api";
+
 const CarTable = ({
   handleUpdateCar,
   handleDeleteCar,
   handleGetCar,
   handleCreateCar,
+  handleGetCarById,
 }) => {
   const actionRef = useRef();
   const [formSubmit] = Form.useForm();
@@ -39,6 +43,7 @@ const CarTable = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [typeSubmit, setTypeSubmit] = useState("");
   const [listFile, setListFile] = useState([]);
+  const [car, setCar] = useState();
   const columns = [
     {
       title: "STT",
@@ -185,9 +190,13 @@ const CarTable = ({
     console.log("Success:", values);
   };
   // -----
-  const showDrawer = (id) => {
-    setOpen(true);
-    handleGetUserById(id);
+  const showDrawer = async (id) => {
+    const res = await handleGetCarById(id);
+    if (res.data) {
+      setCar(res.data);
+      console.log(res.data);
+      setOpen(true);
+    }
   };
   const onClose = () => {
     setOpen(false);
@@ -199,7 +208,7 @@ const CarTable = ({
       const values = await formSubmit.getFieldsValue();
 
       let oldFiles = [];
-      if (values && values.upload) {
+      if (values.upload && values.upload.fileList) {
         oldFiles = values.upload.fileList
           .filter((item) => !item.originFileObj)
           .map((item) => ({ id: item.uid }));
@@ -241,7 +250,6 @@ const CarTable = ({
         setIsModalOpen(false);
         actionRef.current.reload();
       } else {
-        console.log(values.upload);
         await handleCreateCar(formData);
         setIsModalOpen(false);
         actionRef.current.reload();
@@ -601,13 +609,58 @@ const CarTable = ({
               </Upload>
             </Form.Item>
             <Col span={12}>
-              <Form.Item label="Id" name="id">
-                <Input placeholder="Ví dụ: 16 chỗ" />
+              <Form.Item label="Id" name="id" hidden>
+                <Input />
               </Form.Item>
             </Col>
           </Form>
         )}
       </Modal>
+      {car && (
+        <Drawer
+          title={`Chi tiết xe:`}
+          width={550}
+          onClose={onClose}
+          open={open}
+        >
+          <Descriptions
+            bordered
+            column={1}
+            size="middle"
+            style={{ textAlign: "center" }}
+            // style={{ display: "flex", alignItems: "center" }}
+          >
+            <Descriptions.Item label="Tên xe">
+              {car?.carModel?.brand?.name
+                ? `${car.carModel.brand.name} ${car.carModel.name}`
+                : car?.carModel?.name}
+            </Descriptions.Item>
+            <Descriptions.Item label="Giá thuê">
+              {car.price} VNĐ/ngày
+            </Descriptions.Item>
+            <Descriptions.Item label="Trạng thái">
+              {car.available ? "Có sẵn" : "Đang thuê"}
+            </Descriptions.Item>
+            <Descriptions.Item label="Mô tả">
+              {car?.description}
+            </Descriptions.Item>
+          </Descriptions>
+
+          <div style={{ marginTop: 20 }}>
+            <h3 style={{ marginBottom: 10 }}>Hình ảnh :</h3>
+            <div className="car-images">
+              {car?.carImages?.map((img, index) => (
+                <Image
+                  key={index}
+                  src={`http://localhost:8080/storage/car_images/${img.url}`}
+                  width={150}
+                  style={{ marginRight: 10, borderRadius: 8 }}
+                />
+              ))}
+            </div>
+          </div>
+        </Drawer>
+      )}
     </>
   );
 };

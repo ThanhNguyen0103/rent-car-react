@@ -67,7 +67,7 @@ export const UserPage = () => {
   };
   const handleGetUserById = async (id) => {
     const res = await callGetUserById(id);
-    console.log(res.data);
+    return res;
   };
 
   return (

@@ -3,8 +3,10 @@ import ProTable from "@ant-design/pro-table";
 import {
   Button,
   Col,
+  Descriptions,
   Drawer,
   Form,
+  Image,
   Input,
   message,
   Modal,
@@ -27,6 +29,8 @@ const UserTable = ({
   const [formLayout, setFormLayout] = useState("vertical");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [typeSubmit, setTypeSubmit] = useState("");
+  const [open, setOpen] = useState(false);
+  const [user, SetUser] = useState({});
   // --------------//
   const handleSubmit = async () => {
     try {
@@ -75,10 +79,13 @@ const UserTable = ({
     console.log(e);
     // message.error("Click on No");
   };
-  const [open, setOpen] = useState(false);
-  const showDrawer = (id) => {
+
+  const showDrawer = async (id) => {
+    const res = await handleGetUserById(id);
+    if (res.data) {
+      SetUser(res.data);
+    }
     setOpen(true);
-    handleGetUserById(id);
   };
   const onClose = () => {
     setOpen(false);
@@ -457,14 +464,38 @@ const UserTable = ({
       </Modal>
 
       <Drawer
-        title="Basic Drawer"
-        closable={{ "aria-label": "Close Button" }}
+        title="Chi tiết User"
+        placement="right"
+        width={400}
         onClose={onClose}
         open={open}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        {user ? (
+          <Descriptions column={1} bordered>
+            <Descriptions.Item label="ID">{user?.id}</Descriptions.Item>
+            <Descriptions.Item label="Tên">{user?.fullName}</Descriptions.Item>
+            <Descriptions.Item label="Email">{user?.email}</Descriptions.Item>
+            <Descriptions.Item label="Role">
+              {user?.role?.name}
+            </Descriptions.Item>
+            {/* <Descriptions.Item label="Trạng thái">
+              {user?.active ? "Active" : "Inactive"}
+            </Descriptions.Item> */}
+          </Descriptions>
+        ) : (
+          <p>Không có dữ liệu user</p>
+        )}
+        <div style={{ marginTop: 20 }}>
+          <h4 style={{ marginBottom: 10 }}>Avatar:</h4>
+          <div className="user-avatar">
+            <Image
+              key={1}
+              src="http://localhost:8080/storage/resume/1752250166033-hinh1.jpg"
+              width={150}
+              style={{ marginRight: 10, borderRadius: 8 }}
+            />
+          </div>
+        </div>
       </Drawer>
     </>
   );

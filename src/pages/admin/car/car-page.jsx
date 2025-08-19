@@ -4,6 +4,7 @@ import {
   callCreateCar,
   callDeleteCar,
   callGetCar,
+  callGetCarById,
   callUpdateCar,
 } from "../../../service/service-api";
 
@@ -57,7 +58,13 @@ const CarPage = () => {
   };
   const handleDeleteCar = async (id) => {
     const res = await callDeleteCar(id);
-    message.success("Xóa car thành công ");
+    if (res) {
+      message.success("Xóa xe thành công ");
+    }
+  };
+  const handleGetCarById = async (id) => {
+    const res = await callGetCarById(id);
+    return res;
   };
 
   return (
@@ -67,6 +74,7 @@ const CarPage = () => {
         handleDeleteCar={handleDeleteCar}
         handleGetCar={handleGetCar}
         handleCreateCar={handleCreateCar}
+        handleGetCarById={handleGetCarById}
       />
     </>
   );
