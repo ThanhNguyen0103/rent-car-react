@@ -61,3 +61,20 @@ export const callGetCarModel = (query) => {
 //     headers: { "Content-Type": "multipart/form-data" },
 //   });
 // };
+// --- module brands
+export const callCreateCarBrand = (value) => {
+  return instance.post("/api/v1/brands", value);
+};
+export const callUpdateCarBrand = (value) => {
+  return instance.put("/api/v1/brands", value);
+};
+export const callDeleteCarBrand = (id) => {
+  return instance.delete(`/api/v1/brands/${id}`);
+};
+export const callGetCarBrandById = (id) => {
+  return instance.get(`/api/v1/brands/${id}`);
+};
+export const callGetCarBrand = (query) => {
+  return instance.get(`/api/v1/brands?${query}`);
+  // return instance.get(`/api/v1/users`);
+};

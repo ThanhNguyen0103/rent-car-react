@@ -39,6 +39,14 @@ const router = createBrowserRouter([
           </ConfigProvider>
         ),
       },
+      {
+        path: "/admin/rental",
+        element: (
+          <ConfigProvider locale={viVN}>
+            <div>renteal</div>
+          </ConfigProvider>
+        ),
+      },
     ],
   },
 ]);

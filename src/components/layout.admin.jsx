@@ -6,6 +6,7 @@ import {
   MenuUnfoldOutlined,
   ScheduleOutlined,
   SettingOutlined,
+  SnippetsOutlined,
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
@@ -39,6 +40,11 @@ export const LayoutAdmin = () => {
       label: <Link to="/admin/user">User</Link>,
       key: "/admin/user",
       icon: <UserOutlined />,
+    },
+    {
+      label: <Link to="/admin/rental">Rental</Link>,
+      key: "/admin/rental",
+      icon: <SnippetsOutlined />,
     },
   ];
   const itemsDropdown = [

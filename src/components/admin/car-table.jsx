@@ -28,6 +28,7 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import { useEffect } from "react";
 import { useRef, useState } from "react";
+import { callGetCarModel } from "../../service/service-api";
 
 const CarTable = ({
   handleUpdateCar,
@@ -44,6 +45,9 @@ const CarTable = ({
   const [typeSubmit, setTypeSubmit] = useState("");
   const [listFile, setListFile] = useState([]);
   const [car, setCar] = useState();
+  const [carModel, setCarModel] = useState();
+  const formatPrice = (price) =>
+    new Intl.NumberFormat("vi-VN").format(price) + " VNĐ";
   const columns = [
     {
       title: "STT",
@@ -102,6 +106,7 @@ const CarTable = ({
       key: "price",
       align: "center",
       sorter: true,
+      render: (price) => formatPrice(price), // format giá ở đây
     },
     {
       title: "CreatedAt",
@@ -153,11 +158,11 @@ const CarTable = ({
     },
   ];
 
-  useEffect(() => {}, []);
-
-  const showModal = (record) => {
+  const showModal = async (record) => {
     formSubmit.resetFields();
     setIsModalOpen(true);
+    const res = await callGetCarModel();
+    setCarModel(res.data.result);
 
     if (record && record.carImages) {
       formSubmit.setFieldsValue(record);
@@ -269,6 +274,7 @@ const CarTable = ({
     }
     return e?.fileList;
   };
+
   return (
     <>
       <ProTable
@@ -322,7 +328,7 @@ const CarTable = ({
           // onChange: (page) => console.log(page),
         }}
         dateFormatter="string"
-        headerTitle="Car Table"
+        headerTitle="Danh sách xe "
         toolBarRender={() => [
           <Button
             key="button"
@@ -349,110 +355,7 @@ const CarTable = ({
         cancelText="Hủy"
       >
         {typeSubmit === "create" && (
-          // <Form
-          //   form={formSubmit}
-          //   // labelCol={{ span: 4 }}
-          //   // wrapperCol={{ span: 14 }}
-          //   layout="horizontal"
-          //   style={{ maxWidth: 600 }}
-          // >
-          //   <Row gutter={16}>
-          //     <Col lg={24} md={24} sm={24} xs={24}>
-          //       <Form.Item
-          //         label="Dòng xe"
-          //         name={["carModel", "id"]}
-          //         rules={[{ required: true, message: "Vui lòng chọn dòng xe" }]}
-          //       >
-          //         <Select>
-          //           <Select.Option value={4}>Civic</Select.Option>
-          //         </Select>
-          //         {/* <Select
-          //       placeholder="Chọn dòng xe"
-          //       // options={carModels.map((m) => ({
-          //       //   label: m.name,
-          //       //   value: m.id,
-          //       // }))}
-          //       options={
-
-          //       }
-          //     /> */}
-          //       </Form.Item>
-          //     </Col>
-          //     <Col lg={12} md={12} sm={24} xs={24}>
-          //       <Form.Item
-          //         label="Mô tả"
-          //         name="description"
-          //         rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}
-          //       >
-          //         <TextArea rows={4} placeholder="Ví dụ: Xe mới" />
-          //       </Form.Item>
-          //     </Col>
-          //     <Col lg={12} md={12} sm={24} xs={24}>
-          //       <Form.Item
-          //         label="Giá thuê/ngày"
-          //         name="price"
-          //         rules={[
-          //           { required: true, message: "Vui lòng nhập giá thuê" },
-          //           { type: "number", min: 1, message: "Giá phải lớn hơn 1đ" },
-          //         ]}
-          //       >
-          //         <InputNumber
-          //           style={{ width: "100%" }}
-          //           min={0}
-          //           formatter={(value) => `${value}₫`}
-          //           parser={(value) => value.replace("₫", "")}
-          //         />
-          //       </Form.Item>
-          //     </Col>
-          //     <Col lg={12} md={12} sm={24} xs={24}>
-          //       <Form.Item
-          //         label="Số chỗ"
-          //         name="capacity"
-          //         rules={[{ required: true, message: "Vui lòng nhập số chỗ" }]}
-          //       >
-          //         <Input placeholder="Ví dụ: 16 chỗ" />
-          //       </Form.Item>
-          //     </Col>
-          //     <Col lg={12} md={12} sm={24} xs={24}>
-          //       <Form.Item
-          //         label="Trạng thái"
-          //         name="available"
-          //         valuePropName="checked"
-          //         initialValue={true}
-          //       >
-          //         <Switch checkedChildren="Có sẵn" unCheckedChildren="Hết xe" />
-          //       </Form.Item>
-          //     </Col>
-          //     <Col lg={12} md={12} sm={24} xs={24}>
-          //       <Form.Item
-          //         label="Upload"
-          //         name="upload"
-          //         valuePropName="fileList"
-          //         getValueFromEvent={normFile}
-          //       >
-          //         <Upload listType="picture-card" beforeUpload={() => false}>
-          //           <button
-          //             style={{
-          //               color: "inherit",
-          //               cursor: "inherit",
-          //               border: 0,
-          //               background: "none",
-          //             }}
-          //             type="button"
-          //           >
-          //             <PlusOutlined />
-          //             <div style={{ marginTop: 8 }}>Upload</div>
-          //           </button>
-          //         </Upload>
-          //       </Form.Item>
-          //     </Col>
-          //   </Row>
-          // </Form>
-          <Form
-            form={formSubmit}
-            layout="vertical" // 👉 label trên input
-            className="car-form"
-          >
+          <Form form={formSubmit} layout="vertical" className="car-form">
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
@@ -460,8 +363,16 @@ const CarTable = ({
                   name={["carModel", "id"]}
                   rules={[{ required: true, message: "Vui lòng chọn dòng xe" }]}
                 >
-                  <Select placeholder="Chọn dòng xe">
-                    <Select.Option value={4}>Civic</Select.Option>
+                  <Select
+                    placeholder="Chọn dòng xe"
+                    showSearch
+                    optionFilterProp="children"
+                  >
+                    {carModel?.slice(0, 4).map((item) => (
+                      <Select.Option value={item?.id}>
+                        {item?.name}
+                      </Select.Option>
+                    ))}
                   </Select>
                 </Form.Item>
               </Col>
@@ -540,8 +451,16 @@ const CarTable = ({
                   name={["carModel", "id"]}
                   rules={[{ required: true, message: "Vui lòng chọn dòng xe" }]}
                 >
-                  <Select placeholder="Chọn dòng xe">
-                    <Select.Option value={4}>Civic</Select.Option>
+                  <Select
+                    placeholder="Chọn dòng xe"
+                    showSearch
+                    optionFilterProp="children"
+                  >
+                    {carModel?.slice(0, 4).map((item) => (
+                      <Select.Option value={item?.id}>
+                        {item?.name}
+                      </Select.Option>
+                    ))}
                   </Select>
                 </Form.Item>
               </Col>
@@ -639,7 +558,7 @@ const CarTable = ({
               {car.price} VNĐ/ngày
             </Descriptions.Item>
             <Descriptions.Item label="Trạng thái">
-              {car.available ? "Có sẵn" : "Đang thuê"}
+              {car.available ? "Có sẵn" : "Chưa có sẵn"}
             </Descriptions.Item>
             <Descriptions.Item label="Mô tả">
               {car?.description}

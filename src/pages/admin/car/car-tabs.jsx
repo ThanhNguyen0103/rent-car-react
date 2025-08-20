@@ -1,5 +1,7 @@
 import { Tabs } from "antd";
 import CarPage from "./car-page";
+import CarModelPage from "./car-model-page";
+import CarBrandPage from "./car-brand-page";
 
 const CarTabs = () => {
   const items = [
@@ -11,12 +13,12 @@ const CarTabs = () => {
     {
       key: "2",
       label: "Manage Car Model",
-      children: "Content of Tab Pane 2",
+      children: <CarModelPage />,
     },
     {
       key: "3",
       label: "Manage Car Brands",
-      children: "Content of Manage Car Brands",
+      children: <CarBrandPage />,
     },
   ];
 
