@@ -6,6 +6,7 @@ import { ConfigProvider } from "antd";
 import viVN from "antd/locale/vi_VN";
 import { UserPage } from "./pages/admin/user";
 import CarTabs from "./pages/admin/car/car-tabs";
+import RentalPage from "./pages/admin/rental";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,7 +44,7 @@ const router = createBrowserRouter([
         path: "/admin/rental",
         element: (
           <ConfigProvider locale={viVN}>
-            <div>renteal</div>
+            <RentalPage />
           </ConfigProvider>
         ),
       },

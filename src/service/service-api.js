@@ -78,3 +78,20 @@ export const callGetCarBrand = (query) => {
   return instance.get(`/api/v1/brands?${query}`);
   // return instance.get(`/api/v1/users`);
 };
+// --------- module rental
+export const callCreateRental = (value) => {
+  return instance.post("/api/v1/rentals", value);
+};
+export const callUpdateRental = (value) => {
+  return instance.put("/api/v1/rentals", value);
+};
+export const callDeleteRental = (id) => {
+  return instance.delete(`/api/v1/rentals/${id}`);
+};
+export const callGetRentalById = (id) => {
+  return instance.get(`/api/v1/rentals/${id}`);
+};
+export const callGetRental = (query) => {
+  return instance.get(`/api/v1/rentals?${query}`);
+  // return instance.get(`/api/v1/users`);
+};

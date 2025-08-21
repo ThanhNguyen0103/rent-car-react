@@ -2,14 +2,10 @@ import {
   AppstoreOutlined,
   BugOutlined,
   CarOutlined,
+  FileTextOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  ScheduleOutlined,
-  SettingOutlined,
-  SnippetsOutlined,
-  UploadOutlined,
   UserOutlined,
-  VideoCameraOutlined,
 } from "@ant-design/icons";
 import { Avatar, Button, Dropdown, Flex, Layout, Menu, Space } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
@@ -44,7 +40,7 @@ export const LayoutAdmin = () => {
     {
       label: <Link to="/admin/rental">Rental</Link>,
       key: "/admin/rental",
-      icon: <SnippetsOutlined />,
+      icon: <FileTextOutlined />,
     },
   ];
   const itemsDropdown = [

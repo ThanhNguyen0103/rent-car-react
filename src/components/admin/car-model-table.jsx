@@ -99,10 +99,10 @@ const CarModelTable = ({
   ];
   const showModal = async (record) => {
     formSubmit.resetFields();
+    setIsModalOpen(true);
     formSubmit.setFieldsValue(record);
     const res = await callGetCarBrand();
     setBrand(res.data.result);
-    setIsModalOpen(true);
   };
   const handleCancel = () => {
     formSubmit.resetFields();
@@ -236,7 +236,7 @@ const CarModelTable = ({
                     optionFilterProp="children"
                   >
                     {brand?.slice(0, 3).map((item) => (
-                      <Select.Option value={item?.id}>
+                      <Select.Option key={item?.id} value={item?.id}>
                         {item?.name}
                       </Select.Option>
                     ))}
@@ -270,7 +270,7 @@ const CarModelTable = ({
                     optionFilterProp="children"
                   >
                     {brand?.slice(0, 2).map((item) => (
-                      <Select.Option value={item?.id}>
+                      <Select.Option key={item?.id} value={item?.id}>
                         {item?.name}
                       </Select.Option>
                     ))}

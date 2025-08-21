@@ -26,7 +26,6 @@ import {
   Upload,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { useEffect } from "react";
 import { useRef, useState } from "react";
 import { callGetCarModel } from "../../service/service-api";
 
@@ -369,7 +368,7 @@ const CarTable = ({
                     optionFilterProp="children"
                   >
                     {carModel?.slice(0, 4).map((item) => (
-                      <Select.Option value={item?.id}>
+                      <Select.Option key={item?.id} value={item?.id}>
                         {item?.name}
                       </Select.Option>
                     ))}
@@ -457,7 +456,7 @@ const CarTable = ({
                     optionFilterProp="children"
                   >
                     {carModel?.slice(0, 4).map((item) => (
-                      <Select.Option value={item?.id}>
+                      <Select.Option key={item?.id} value={item?.id}>
                         {item?.name}
                       </Select.Option>
                     ))}
