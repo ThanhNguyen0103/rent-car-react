@@ -95,3 +95,7 @@ export const callGetRental = (query) => {
   return instance.get(`/api/v1/rentals?${query}`);
   // return instance.get(`/api/v1/users`);
 };
+// ------ module auth
+export const callApiLogin = (value) => {
+  return instance.post("/api/v1/auth/login", value);
+};

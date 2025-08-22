@@ -7,10 +7,16 @@ import viVN from "antd/locale/vi_VN";
 import { UserPage } from "./pages/admin/user";
 import CarTabs from "./pages/admin/car/car-tabs";
 import RentalPage from "./pages/admin/rental";
+import LoginPage from "./pages/login";
+import HomePage from "./pages/client/home-page";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world!</div>,
+    element: <HomePage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
   {
     path: "/admin",

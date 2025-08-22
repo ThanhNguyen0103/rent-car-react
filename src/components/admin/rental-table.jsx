@@ -4,6 +4,8 @@ import {
   Button,
   Col,
   DatePicker,
+  Descriptions,
+  Drawer,
   Form,
   Input,
   message,
@@ -32,6 +34,15 @@ const RentalTable = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [typeSubmit, setTypeSubmit] = useState("");
   const [rental, setRental] = useState();
+  const showDrawer = async (id) => {
+    const res = await handleGetRentalById(id);
+    setRental(res.data);
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+  // ----
   const showModal = async (record) => {
     formSubmit.resetFields();
     setIsModalOpen(true);
@@ -44,8 +55,12 @@ const RentalTable = ({
   };
   // --------
   const confirm = async (id) => {
-    await handleDeleteRental(id);
-    actionRef.current.reload();
+    try {
+      await handleDeleteRental(id);
+      actionRef.current.reload();
+    } catch (error) {
+      message.error(error.message);
+    }
   };
   const cancel = (e) => {
     console.log(e);
@@ -54,7 +69,7 @@ const RentalTable = ({
   // ------
   const handleSubmit = async () => {
     try {
-      const values = await formSubmit.validateFields();
+      await formSubmit.validateFields();
       const req = await formSubmit.getFieldsValue();
 
       if (typeSubmit == "update") {
@@ -67,7 +82,9 @@ const RentalTable = ({
         actionRef.current.reload();
       }
     } catch (error) {
-      message.error("Validate Failed");
+      error.message
+        ? message.error(error.message)
+        : message.error("Validate Failed");
       const fields = Object.entries(error.errorFields).map(([key, value]) => ({
         name: key,
         errors: [value],
@@ -84,7 +101,15 @@ const RentalTable = ({
       width: 50,
       hideInSearch: true,
       align: "center",
-      render: (id) => <a>{id}</a>,
+      render: (id) => (
+        <a
+          onClick={() => {
+            showDrawer(id);
+          }}
+        >
+          {id}
+        </a>
+      ),
     },
     {
       title: "Khách thuê",
@@ -177,7 +202,6 @@ const RentalTable = ({
   ];
   return (
     <>
-      {" "}
       <ProTable
         columns={columns}
         actionRef={actionRef}
@@ -317,7 +341,20 @@ const RentalTable = ({
                 <Form.Item
                   name="endDate"
                   label="Chọn ngày kết thúc "
-                  rules={[{ required: true, message: "Chọn ngày kết thúc" }]}
+                  rules={[
+                    { required: true, message: "Chọn ngày kết thúc" },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        const start = getFieldValue("startDate");
+                        if (!value || !start || dayjs(value).isAfter(start)) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          new Error("Ngày kết thúc phải sau ngày bắt đầu!")
+                        );
+                      },
+                    }),
+                  ]}
                   getValueProps={(value) => ({
                     value: value ? dayjs(value) : "",
                   })}
@@ -334,6 +371,43 @@ const RentalTable = ({
           </Form>
         )}
       </Modal>
+      <Drawer
+        title="Chi tiết đơn hàng"
+        placement="right"
+        width={600}
+        onClose={onClose}
+        open={open}
+      >
+        {rental ? (
+          <Descriptions bordered column={1}>
+            <Descriptions.Item label="Mã đơn">{rental.id}</Descriptions.Item>
+            <Descriptions.Item label="Khách hàng">
+              {rental.user.email}
+            </Descriptions.Item>
+            <Descriptions.Item label="Điểm nhận xe">
+              {rental.pickupLocation}
+            </Descriptions.Item>
+            <Descriptions.Item label="Điểm trả xe">
+              {rental.dropoffLocation}
+            </Descriptions.Item>
+
+            <Descriptions.Item label="Ngày bắt đầu">
+              {rental.startDate}
+            </Descriptions.Item>
+            <Descriptions.Item label="Ngày kết thúc">
+              {rental.endDate}
+            </Descriptions.Item>
+            <Descriptions.Item label="Trạng thái">
+              {rental.status}
+            </Descriptions.Item>
+            <Descriptions.Item label="Tổng tiền">
+              {rental.totalPrice} VNĐ
+            </Descriptions.Item>
+          </Descriptions>
+        ) : (
+          <p>Chưa có dữ liệu</p>
+        )}
+      </Drawer>
     </>
   );
 };
