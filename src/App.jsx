@@ -9,10 +9,27 @@ import CarTabs from "./pages/admin/car/car-tabs";
 import RentalPage from "./pages/admin/rental";
 import LoginPage from "./pages/login";
 import HomePage from "./pages/client/home-page";
+import CarDetailsPage from "./pages/client/car-details-page";
+import LayoutClient from "./components/layout.client";
+import CheckoutPage from "./pages/client/checkout-page";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <LayoutClient />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: "car/:id",
+        element: <CarDetailsPage />,
+      },
+      {
+        path: "checkout/:id",
+        element: <CheckoutPage />,
+      },
+    ],
   },
   {
     path: "/login",
@@ -31,7 +48,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/admin/car",
+        path: "car",
         element: (
           <ConfigProvider locale={viVN}>
             <CarTabs />
@@ -39,7 +56,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/admin/user",
+        path: "user",
         element: (
           <ConfigProvider locale={viVN}>
             <UserPage />
@@ -47,7 +64,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/admin/rental",
+        path: "rental",
         element: (
           <ConfigProvider locale={viVN}>
             <RentalPage />
