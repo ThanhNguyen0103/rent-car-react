@@ -48,12 +48,9 @@ const CarDetailsPage = () => {
   const [form] = Form.useForm();
 
   const handleBooking = (values) => {
-    console.log("Form booking:", values);
     const bookingData = {
       ...values,
       car: car,
-      // carName: car?.name,
-      // price: car?.price,
     };
     navigate(`/checkout/${car.id}`, { state: { values: bookingData } });
   };
@@ -139,7 +136,6 @@ const CarDetailsPage = () => {
           boxShadow: "0px 4px 24px rgba(225, 225, 225, 0.25)",
         }}
       >
-        {" "}
         <div
           style={{
             display: "flex",
@@ -156,7 +152,7 @@ const CarDetailsPage = () => {
             <div style={{ fontSize: 16, margin: 4 }}>
               <EnvironmentOutlined /> Vị trí : Quận 7 , Hồ Chí Minh
             </div>
-            <p style={{ margin: 4 }}>
+            <span style={{ margin: 4 }}>
               <Space>
                 <CalendarOutlined />
                 {car?.available ? (
@@ -165,7 +161,7 @@ const CarDetailsPage = () => {
                   <Tag color="red">Hết xe</Tag>
                 )}
               </Space>
-            </p>
+            </span>
           </div>
           <Button
             style={{
@@ -175,12 +171,12 @@ const CarDetailsPage = () => {
               fontSize: 16,
             }}
           >
-            <p>
+            <span>
               <Space>
                 <DollarOutlined />
-                <b>{car?.price.toLocaleString("vi-VN")} đ / ngày</b>
+                {car?.price.toLocaleString("vi-VN")} đ / ngày
               </Space>
-            </p>
+            </span>
           </Button>
         </div>
       </div>

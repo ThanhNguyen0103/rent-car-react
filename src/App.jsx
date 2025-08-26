@@ -12,6 +12,7 @@ import HomePage from "./pages/client/home-page";
 import CarDetailsPage from "./pages/client/car-details-page";
 import LayoutClient from "./components/layout.client";
 import CheckoutPage from "./pages/client/checkout-page";
+import ComfirmPage from "./pages/client/comfirm-page";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "checkout/:id",
         element: <CheckoutPage />,
+      },
+      {
+        path: "payment-confirmation",
+        element: <ComfirmPage />,
       },
     ],
   },
