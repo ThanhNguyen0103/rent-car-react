@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const navigate = useNavigate();
   const onFinish = ({ username, password }) => {
-    console.log("Received values of form: ", { username, password });
-
     handleLogin({ username, password });
   };
 
@@ -15,6 +13,7 @@ const LoginPage = () => {
     try {
       const res = await callApiLogin(value);
       if (res && res.data) {
+        localStorage.setItem("access_token", res.data.accessToken);
         navigate("/");
       }
     } catch (error) {

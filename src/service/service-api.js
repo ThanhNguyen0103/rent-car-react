@@ -99,3 +99,9 @@ export const callGetRental = (query) => {
 export const callApiLogin = (value) => {
   return instance.post("/api/v1/auth/login", value);
 };
+export const callGetAccount = () => {
+  return instance.get("/api/v1/auth/account");
+};
+export const callGetRefreshToken = () => {
+  return instance.get("/api/v1/auth/refresh");
+};
