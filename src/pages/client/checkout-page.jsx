@@ -8,7 +8,6 @@ import {
   Form,
   Input,
   message,
-  Result,
   Row,
   Spin,
 } from "antd";
@@ -20,12 +19,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { callCreateRental } from "../../service/service-api";
 import { useState } from "react";
 import Title from "antd/es/typography/Title";
+import { useUserContext } from "../../components/auth";
 
 const CheckoutPage = () => {
+  const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const { values } = location.state || {}; // lấy thông tin booking truyền kèm
-  console.log(values);
+  const { bookingValues, user, clearBooking } = useUserContext();
+  const values = bookingValues;
+
   const navigate = useNavigate();
 
   const days =
@@ -49,6 +51,7 @@ const CheckoutPage = () => {
     if (res && res.data) {
       setTimeout(() => {
         setLoading(false);
+        clearBooking();
         navigate("/payment-confirmation", {
           state: { booking: res.data },
         });
@@ -166,9 +169,10 @@ const CheckoutPage = () => {
               <Form
                 layout="vertical"
                 onFinish={onFinish}
-                requiredMark="optional"
+                form={form}
+                initialValues={user}
               >
-                <Form.Item label="ID" name="id">
+                <Form.Item label="ID" name="id" hidden>
                   <Input />
                 </Form.Item>
                 <Form.Item
@@ -218,7 +222,7 @@ const CheckoutPage = () => {
             >
               <Descriptions column={1} bordered size="small">
                 <Descriptions.Item label="Tên xe">
-                  {values?.car.carModel?.name}
+                  {values?.car?.carModel?.name}
                 </Descriptions.Item>
                 <Descriptions.Item label="Địa điểm nhận xe">
                   {values?.pickupLocation}
@@ -237,11 +241,12 @@ const CheckoutPage = () => {
                     : ""}
                 </Descriptions.Item>
                 <Descriptions.Item label="Đơn giá">
-                  {values?.car?.price?.toLocaleString()} VND / ngày
+                  <span>{values?.car?.price?.toLocaleString() || 0}</span>
+                  {values && ` VND / ngày`}
                 </Descriptions.Item>
                 <Descriptions.Item label="Số ngày">{days}</Descriptions.Item>
                 <Descriptions.Item label="Tạm tính">
-                  <b>{totalPrice.toLocaleString("vi-VN")} VND</b>
+                  <b>{totalPrice.toLocaleString("vi-VN") || 0} VND</b>
                 </Descriptions.Item>
               </Descriptions>
             </Card>

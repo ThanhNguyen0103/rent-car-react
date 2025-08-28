@@ -29,12 +29,14 @@ import breadcrumbright from "../../assets/breadcrumbright.png";
 import { DatePicker } from "antd";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { callGetCarById } from "../../service/service-api";
+import { useUserContext } from "../../components/auth";
 
 const { RangePicker } = DatePicker;
 const CarDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [car, setCar] = useState();
+  const { saveBooking } = useUserContext();
 
   useEffect(() => {
     handleGetCarById(id);
@@ -52,7 +54,8 @@ const CarDetailsPage = () => {
       ...values,
       car: car,
     };
-    navigate(`/checkout/${car.id}`, { state: { values: bookingData } });
+    saveBooking(bookingData);
+    navigate(`/checkout/${car.id}`);
   };
   const carouselRef = useRef(null);
   const goTo = (index) => {

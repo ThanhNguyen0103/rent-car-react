@@ -1,18 +1,21 @@
-import { Avatar, Dropdown, Layout, Menu, Space } from "antd";
+import { Avatar, Button, Dropdown, Layout, Menu, Space } from "antd";
 
 import {
   AppstoreOutlined,
   CarOutlined,
   HomeOutlined,
   PhoneOutlined,
-  ShoppingCartOutlined,
 } from "@ant-design/icons";
 import reactLogo from "../../assets/react.svg";
-import { Link, matchPath, useLocation } from "react-router-dom";
+import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
+import { useUserContext } from "../auth";
 
-const { Header, Content, Footer } = Layout;
+const { Header } = Layout;
 
 const HeaderClient = () => {
+  const navigate = useNavigate();
+  const { user } = useUserContext();
+  console.log(user);
   const location = useLocation();
 
   const items = [
@@ -100,30 +103,43 @@ const HeaderClient = () => {
         />
         <div style={{ display: "flex" }}>
           <Space>
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <ShoppingCartOutlined style={{ fontSize: 32 }} />
-            </span>
-
-            <Dropdown
-              menu={{ items: itemsDropdown }}
-              trigger={["click"]}
-              placement="bottomRight"
-              arrow={{ pointAtCenter: true }}
-            >
-              <span style={{ cursor: "pointer" }}>
-                <Avatar size={32}>IU</Avatar>
-              </span>
-            </Dropdown>
+            {user ? (
+              <Dropdown
+                menu={{ items: itemsDropdown }}
+                trigger={["click"]}
+                placement="bottomRight"
+                arrow={{ pointAtCenter: true }}
+              >
+                <span style={{ cursor: "pointer" }}>
+                  <Avatar size={32}>{user.role.name}</Avatar>
+                </span>
+              </Dropdown>
+            ) : (
+              <Button
+                type="primary"
+                shape="round"
+                size="middle"
+                style={{
+                  background: "#1890ff",
+                  borderColor: "#1890ff",
+                  fontWeight: 500,
+                  padding: "0 20px",
+                }}
+                onClick={() => navigate("/login")}
+              >
+                Đăng nhập
+              </Button>
+            )}
           </Space>
         </div>
 
         {/* CSS keyframes */}
         <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+			@keyframes spin {
+			from { transform: rotate(0deg); }
+			to { transform: rotate(360deg); }
+			}
+		`}</style>
       </Header>
     </>
   );

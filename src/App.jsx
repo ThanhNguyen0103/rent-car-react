@@ -14,6 +14,7 @@ import LayoutClient from "./components/layout.client";
 import CheckoutPage from "./pages/client/checkout-page";
 import ComfirmPage from "./pages/client/comfirm-page";
 import PrivateRoute from "./components/private-route";
+import { UserProvider } from "./components/auth";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -87,7 +88,9 @@ const router = createBrowserRouter([
 const App = () => {
   return (
     <>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
     </>
   );
 };

@@ -1,25 +1,18 @@
-import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Flex, message } from "antd";
-import { callApiLogin } from "../service/service-api";
-import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../components/auth";
+import { useLocation, useNavigate } from "react-router-dom";
+
 const LoginPage = () => {
+  const { handleLogin } = useUserContext();
   const navigate = useNavigate();
-  const onFinish = ({ username, password }) => {
-    handleLogin({ username, password });
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  const onFinish = async ({ username, password }) => {
+    const res = await handleLogin({ username, password });
+    res ? navigate(from, { replace: true }) : "";
   };
 
-  const handleLogin = async (value) => {
-    try {
-      const res = await callApiLogin(value);
-      if (res && res.data) {
-        localStorage.setItem("access_token", res.data.accessToken);
-        navigate("/");
-      }
-    } catch (error) {
-      message.error(error.error);
-    }
-  };
   return (
     <div
       style={{
