@@ -12,9 +12,11 @@ import { Content, Footer, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import React, { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { useUserContext } from "./auth";
 
 export const LayoutAdmin = () => {
   const location = useLocation();
+  const { user, handleLogout } = useUserContext();
   const [current, setCurrent] = useState(location.pathname);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -50,9 +52,15 @@ export const LayoutAdmin = () => {
     },
     {
       label: (
-        <label style={{ cursor: "pointer" }} onClick={() => {}}>
+        <Link
+          to={"/login"}
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            handleLogout();
+          }}
+        >
           Đăng xuất
-        </label>
+        </Link>
       ),
       key: "logout",
     },
@@ -93,8 +101,8 @@ export const LayoutAdmin = () => {
             />
             <Dropdown menu={{ items: itemsDropdown }} trigger={["click"]}>
               <Space style={{ cursor: "pointer", marginRight: 20 }}>
-                Welcome
-                <Avatar> IU</Avatar>
+                <span> Xin chào ! {user.fullName}</span>
+                <Avatar> {user.role.name}</Avatar>
               </Space>
             </Dropdown>
           </div>

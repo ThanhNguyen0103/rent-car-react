@@ -111,7 +111,7 @@ const HomePage = () => {
                 <Meta
                   title={
                     <span style={{ fontSize: 18, fontWeight: 600 }}>
-                      {car.carModel?.name}
+                      {car.carModel?.brand.name} {car.carModel?.name}
                     </span>
                   }
                   description={

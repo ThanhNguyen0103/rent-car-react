@@ -119,7 +119,7 @@ const ComfirmPage = () => {
             <Button type="primary" onClick={() => navigate("/")}>
               Về trang chủ
             </Button>
-            <Button onClick={() => navigate("/orders")}>
+            <Button onClick={() => navigate("/history")}>
               Đơn hàng của tôi
             </Button>
           </div>

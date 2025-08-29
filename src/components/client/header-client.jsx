@@ -9,14 +9,14 @@ import {
 import reactLogo from "../../assets/react.svg";
 import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
 import { useUserContext } from "../auth";
+import { callGetRentalByUserId } from "../../service/service-api";
 
 const { Header } = Layout;
 
 const HeaderClient = () => {
   const navigate = useNavigate();
-  const { user } = useUserContext();
-  console.log(user);
   const location = useLocation();
+  const { user, handleLogout } = useUserContext();
 
   const items = [
     {
@@ -31,7 +31,7 @@ const HeaderClient = () => {
     },
     {
       label: "Pages",
-      key: "Pages",
+      key: "history",
       icon: <AppstoreOutlined />,
     },
     {
@@ -54,15 +54,28 @@ const HeaderClient = () => {
       label: <Link to={"/"}>Trang chủ</Link>,
       key: "home",
     },
-    {
-      label: <Link to={"/admin"}>Quản lí tài khoản</Link>,
-      key: "admin",
-    },
+
+    user.role.name == "ADMIN"
+      ? {
+          label: <Link to={"/admin"}>Quản lí tài khoản</Link>,
+          key: "admin",
+        }
+      : {
+          label: <Link to={"/history"}>Quản lí đơn hàng</Link>,
+          key: "history",
+        },
+
     {
       label: (
-        <label style={{ cursor: "pointer" }} onClick={() => {}}>
+        <Link
+          to={"/login"}
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            handleLogout();
+          }}
+        >
           Đăng xuất
-        </label>
+        </Link>
       ),
       key: "logout",
     },

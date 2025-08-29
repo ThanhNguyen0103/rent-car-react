@@ -15,6 +15,10 @@ import CheckoutPage from "./pages/client/checkout-page";
 import ComfirmPage from "./pages/client/comfirm-page";
 import PrivateRoute from "./components/private-route";
 import { UserProvider } from "./components/auth";
+import ForbiddenPage from "./pages/error-page/FobidenPage";
+import RentalHistoryPage from "./pages/client/history-page";
+import CarListPage from "./pages/client/car-list-page";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,10 +33,22 @@ const router = createBrowserRouter([
         element: <CarDetailsPage />,
       },
       {
+        path: "cars",
+        element: <CarListPage />,
+      },
+      {
         path: "checkout/:id",
         element: (
           <PrivateRoute>
             <CheckoutPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "history",
+        element: (
+          <PrivateRoute>
+            <RentalHistoryPage />
           </PrivateRoute>
         ),
       },
@@ -47,8 +63,16 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
+    path: "/forbidden",
+    element: <ForbiddenPage />,
+  },
+  {
     path: "/admin",
-    element: <LayoutAdmin />,
+    element: (
+      <PrivateRoute role={"ADMIN"}>
+        <LayoutAdmin />
+      </PrivateRoute>
+    ),
     children: [
       {
         index: true,

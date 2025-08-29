@@ -235,11 +235,13 @@ const CarModelTable = ({
                     showSearch
                     optionFilterProp="children"
                   >
-                    {brand?.slice(0, 3).map((item) => (
-                      <Select.Option key={item?.id} value={item?.id}>
-                        {item?.name}
-                      </Select.Option>
-                    ))}
+                    {brand
+                      ?.filter((item) => !item.isHidden) // isHidden = true → ẩn
+                      .map((item) => (
+                        <Select.Option key={item.id} value={item.id}>
+                          {item?.name}
+                        </Select.Option>
+                      ))}
                   </Select>
                 </Form.Item>
               </Col>

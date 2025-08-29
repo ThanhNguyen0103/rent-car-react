@@ -30,7 +30,6 @@ const CarBrandPage = () => {
 
     let query = `page=${page}&size=${size}`;
     const res = await callGetCarBrand(query);
-    console.log(res);
     return res.data;
   };
   const handleUpdateCarBrand = async (value) => {

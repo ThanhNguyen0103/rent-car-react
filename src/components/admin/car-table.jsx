@@ -72,6 +72,8 @@ const CarTable = ({
       key: "carModel",
       sorter: true,
       align: "center",
+      render: (_, record) =>
+        `${record.carModel?.brand.name} ${record.carModel.name}`,
     },
     {
       title: "Available",
@@ -119,7 +121,7 @@ const CarTable = ({
       title: "UpdatedAt",
       dataIndex: "updatedAt",
       sorter: true,
-      key: "updatedAt ",
+      key: "updatedAt",
       hideInSearch: true,
       width: 200,
     },
@@ -367,11 +369,13 @@ const CarTable = ({
                     showSearch
                     optionFilterProp="children"
                   >
-                    {carModel?.slice(0, 4).map((item) => (
-                      <Select.Option key={item?.id} value={item?.id}>
-                        {item?.name}
-                      </Select.Option>
-                    ))}
+                    {carModel
+                      ?.filter((item) => !item.isHidden) // isHidden = true → ẩn
+                      .map((item) => (
+                        <Select.Option key={item.id} value={item.id}>
+                          {item?.name}
+                        </Select.Option>
+                      ))}
                   </Select>
                 </Form.Item>
               </Col>
@@ -401,7 +405,11 @@ const CarTable = ({
                   name="capacity"
                   rules={[{ required: true, message: "Vui lòng nhập số chỗ" }]}
                 >
-                  <Input placeholder="Ví dụ: 16 chỗ" />
+                  <Select>
+                    <Option value="4">4 chỗ</Option>
+                    <Option value="7">7 chổ</Option>
+                    <Option value="16">16 chỗ</Option>
+                  </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>

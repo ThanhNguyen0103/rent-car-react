@@ -10,26 +10,20 @@ import {
 
 const CarPage = () => {
   const handleGetCar = async (params, sort, filter) => {
-    let page = params.current;
-    let size = params.pageSize;
-    let sortField = Object.keys(sort)[0];
-    let sortOrder = "";
-    // if (sortField === "fullName") {
-    //   sortOrder =
-    //     sort[sortField] === "ascend"
-    //       ? "&sort=fullName,asc"
-    //       : "&sort=fullName,desc";
-    // }
-    // if (sortField === "createdAt") {
-    //   sortOrder =
-    //     sort[sortField] === "ascend"
-    //       ? "&sort=createdAt,asc"
-    //       : "&sort=createdAt,desc";
-    // }
+    console.log(sort);
+    const { current, pageSize, ...rest } = params;
 
-    // let query = `page=${page}&size=${size}${sortOrder}`;
+    const query = {
+      page: current,
+      size: pageSize,
+      ...rest,
+      sort: sort
+        ? Object.keys(sort)
+            .map((key) => `${key},${sort[key] === "ascend" ? "asc" : "desc"}`)
+            .join("") // &
+        : undefined,
+    };
 
-    let query = `page=${page}&size=${size}`;
     const res = await callGetCar(query);
     return res.data;
   };

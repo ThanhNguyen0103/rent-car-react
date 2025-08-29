@@ -13,6 +13,9 @@ export const callDeleteUser = (id) => {
 export const callGetUserById = (id) => {
   return instance.get(`/api/v1/users/${id}`);
 };
+export const callGetRentalByUserId = (id) => {
+  return instance.get(`/api/v1/user/${id}/rentals`);
+};
 export const callGetUser = (query) => {
   return instance.get(`/api/v1/users?${query}`);
   // return instance.get(`/api/v1/users`);
@@ -36,7 +39,9 @@ export const callGetCarById = (id) => {
   return instance.get(`/api/v1/cars/${id}`);
 };
 export const callGetCar = (query) => {
-  return instance.get(`/api/v1/cars?${query}`);
+  return instance.get(`/api/v1/cars`, {
+    params: query,
+  });
   // return instance.get(`/api/v1/users`);
 };
 // module car-model
@@ -104,4 +109,7 @@ export const callGetAccount = () => {
 };
 export const callGetRefreshToken = () => {
   return instance.get("/api/v1/auth/refresh");
+};
+export const callGetLogout = () => {
+  return instance.get("/api/v1/auth/logout");
 };

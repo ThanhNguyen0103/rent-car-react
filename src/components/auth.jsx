@@ -1,5 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { callApiLogin, callGetAccount } from "../service/service-api";
+import {
+  callApiLogin,
+  callGetAccount,
+  callGetLogout,
+} from "../service/service-api";
 
 import { message } from "antd";
 
@@ -58,10 +62,21 @@ export const UserProvider = ({ children }) => {
       message.error(error.error);
     }
   };
+  const handleLogout = async () => {
+    await callGetLogout();
+    localStorage.removeItem("access_token");
+  };
 
   return (
     <UserContext.Provider
-      value={{ user, handleLogin, saveBooking, bookingValues, clearBooking }}
+      value={{
+        user,
+        handleLogin,
+        saveBooking,
+        bookingValues,
+        clearBooking,
+        handleLogout,
+      }}
     >
       {!loading && children}
     </UserContext.Provider>

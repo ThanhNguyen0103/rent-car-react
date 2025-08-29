@@ -146,8 +146,9 @@ const RentalTable = ({
       render: (status) => {
         const map = {
           PENDING: "Đang chờ",
-          APPROVED: "Đã duyệt",
-          CANCELLED: "Đã hủy",
+          RESERVED: "Đã đặt",
+          CANCELED: "Đã hủy",
+          ONGOING: "Đang thuê",
           COMPLETED: "Hoàn thành",
         };
         return map[status] || status;
@@ -299,10 +300,11 @@ const RentalTable = ({
               <Col span={12}>
                 <Form.Item name="status" label="Trạng thái">
                   <Select>
-                    <Option value="PENDING">Pending</Option>
-                    <Option value="CONFIRMED">Confirmed</Option>
-                    <Option value="COMPLETED">Completed</Option>
-                    <Option value="CANCELED">Canceled</Option>
+                    <Option value="RESERVED">Đã đặt</Option>
+                    <Option value="PENDING">Đang chờ</Option>
+                    <Option value="ONGOING">Đang thuê</Option>
+                    <Option value="COMPLETED">Đã trả xe</Option>
+                    <Option value="CANCELED">Đã hủy</Option>
                   </Select>
                 </Form.Item>
               </Col>
