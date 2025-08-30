@@ -10,25 +10,17 @@ import RentalTable from "../../components/admin/rental-table";
 
 const RentalPage = () => {
   const handleGetRental = async (params, sort, filter) => {
-    let page = params.current;
-    let size = params.pageSize;
-    let sortField = Object.keys(sort)[0];
-    let sortOrder = "";
-
-    if (sortField === "createdAt") {
-      sortOrder =
-        sort[sortField] === "ascend"
-          ? "&sort=createdAt,asc"
-          : "&sort=createdAt,desc";
-    }
-    if (sortField === "updatedAt") {
-      sortOrder =
-        sort[sortField] === "ascend"
-          ? "&sort=updatedAt,asc"
-          : "&sort=updatedAt,desc";
-    }
-
-    let query = `page=${page}&size=${size}${sortOrder}`;
+    const { current, pageSize, ...rest } = params;
+    const query = {
+      page: current,
+      size: pageSize,
+      ...rest,
+      sort: sort
+        ? Object.keys(sort)
+            .map((key) => `${key},${sort[key] === "ascend" ? "asc" : "desc"}`)
+            .join("") // &
+        : undefined,
+    };
 
     const res = await callGetRental(query);
     return res.data;

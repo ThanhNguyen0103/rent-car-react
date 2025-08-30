@@ -1,5 +1,5 @@
 import instance from "./service-api-custom";
-
+import qs from "qs";
 // module user
 export const callCreateUser = (value) => {
   return instance.post("/api/v1/users", value);
@@ -17,7 +17,9 @@ export const callGetRentalByUserId = (id) => {
   return instance.get(`/api/v1/user/${id}/rentals`);
 };
 export const callGetUser = (query) => {
-  return instance.get(`/api/v1/users?${query}`);
+  return instance.get(`/api/v1/users`, {
+    params: query,
+  });
   // return instance.get(`/api/v1/users`);
 };
 // --- module car
@@ -41,8 +43,9 @@ export const callGetCarById = (id) => {
 export const callGetCar = (query) => {
   return instance.get(`/api/v1/cars`, {
     params: query,
+    paramsSerializer: (params) =>
+      qs.stringify(params, { arrayFormat: "comma" }),
   });
-  // return instance.get(`/api/v1/users`);
 };
 // module car-model
 export const callCreateCarModel = (value) => {
@@ -97,7 +100,9 @@ export const callGetRentalById = (id) => {
   return instance.get(`/api/v1/rentals/${id}`);
 };
 export const callGetRental = (query) => {
-  return instance.get(`/api/v1/rentals?${query}`);
+  return instance.get(`/api/v1/rentals`, {
+    params: query,
+  });
   // return instance.get(`/api/v1/users`);
 };
 // ------ module auth

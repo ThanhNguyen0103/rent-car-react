@@ -151,7 +151,7 @@ const UserTable = ({
       title: "UpdatedAt",
       dataIndex: "updatedAt",
       sorter: true,
-      key: "updatedAt ",
+      key: "updatedAt",
       hideInSearch: true,
       width: 200,
     },

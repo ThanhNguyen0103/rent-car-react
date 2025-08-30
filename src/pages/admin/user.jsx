@@ -24,25 +24,18 @@ export const UserPage = () => {
     }
   };
   const handleGetUser = async (params, sort, filter) => {
-    let page = params.current;
-    let size = params.pageSize;
-    let sortField = Object.keys(sort)[0];
-    let sortOrder = "";
+    const { current, pageSize, ...rest } = params;
 
-    if (sortField === "fullName") {
-      sortOrder =
-        sort[sortField] === "ascend"
-          ? "&sort=fullName,asc"
-          : "&sort=fullName,desc";
-    }
-    if (sortField === "createdAt") {
-      sortOrder =
-        sort[sortField] === "ascend"
-          ? "&sort=createdAt,asc"
-          : "&sort=createdAt,desc";
-    }
-
-    let query = `page=${page}&size=${size}${sortOrder}`;
+    const query = {
+      page: current,
+      size: pageSize,
+      ...rest,
+      sort: sort
+        ? Object.keys(sort)
+            .map((key) => `${key},${sort[key] === "ascend" ? "asc" : "desc"}`)
+            .join("") // &
+        : undefined,
+    };
 
     const res = await callGetUser(query);
     if (res.data && res.data.result) {
