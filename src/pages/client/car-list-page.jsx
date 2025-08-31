@@ -81,7 +81,7 @@ const CarListPage = () => {
       size: pagination.pageSize,
       price: filters.priceRange,
     };
-
+    console.log(query);
     await handleGetCar(query.page, query.size, query);
   };
 
@@ -155,10 +155,10 @@ const CarListPage = () => {
                   handleFilterChange({ priceRange: values })
                 }
               >
-                <Checkbox value={"0, 1000000]"}>Dưới 1 triệu</Checkbox>
-                <Checkbox value={"1000000, 2000000"}>1 - 2 triệu</Checkbox>
-                <Checkbox value={"2000000, 5000000"}>2 - 5 triệu</Checkbox>
-                <Checkbox value={"5000000, 999999999"}>Trên 5 triệu</Checkbox>
+                <Checkbox value={"duoi-1-trieu"}>Dưới 1 triệu</Checkbox>
+                <Checkbox value={"tu-1trieu-den-2trieu"}>1 - 2 triệu</Checkbox>
+                <Checkbox value={"tu-2trieu-den-5trieu"}>2 - 5 triệu</Checkbox>
+                <Checkbox value={"trên-5trieu"}>Trên 5 triệu</Checkbox>
               </Checkbox.Group>
             </div>
 

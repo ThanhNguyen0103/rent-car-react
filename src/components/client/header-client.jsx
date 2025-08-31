@@ -55,7 +55,7 @@ const HeaderClient = () => {
       key: "home",
     },
 
-    user.role.name == "ADMIN"
+    user?.role?.name == "ADMIN"
       ? {
           label: <Link to={"/admin"}>Quản lí tài khoản</Link>,
           key: "admin",
