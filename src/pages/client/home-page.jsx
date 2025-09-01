@@ -1,12 +1,29 @@
-import { Button, Card, Carousel, Col, Layout, Row, theme } from "antd";
+import {
+  Button,
+  Card,
+  Carousel,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Layout,
+  Row,
+  theme,
+} from "antd";
 
-import { StarOutlined } from "@ant-design/icons";
-import hinh2 from "../../assets/hinh2.png";
-import hinh3 from "../../assets/hinh3.png";
+import {
+  ArrowRightOutlined,
+  LikeOutlined,
+  SearchOutlined,
+  StarOutlined,
+} from "@ant-design/icons";
+
+import carRight from "../../assets/car-right.png";
 import Meta from "antd/es/card/Meta";
 import { callGetCar } from "../../service/service-api";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "../../style/global.css";
 const { Content } = Layout;
 
 const HomePage = () => {
@@ -22,46 +39,128 @@ const HomePage = () => {
     }
   };
 
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
-
-  const contentStyle = {
-    height: "500px",
-    color: "#fff",
-    lineHeight: "160px",
-    textAlign: "center",
-    // background: "#364d79",
-  };
-  const imgStyle = {
-    width: "100%",
-    objectFit: "cover", // cắt ảnh cho vừa khung mà không méo
-    borderRadius: "10px", // bo góc cho đẹp
-    transition: "transform 0.4s ease-in-out",
+  const onFinish = (values) => {
+    console.log("Success:", values);
   };
 
   return (
     <Content>
-      <div
-        style={{
-          background: colorBgContainer,
-          borderRadius: borderRadiusLG,
-          marginTop: 56,
-        }}
-      >
-        <Carousel autoplay>
-          <div>
-            <h3 style={contentStyle}>
-              <img style={imgStyle} src={hinh2} alt="" />
-            </h3>
-          </div>
-          <div>
-            <h3 style={contentStyle}>
-              <img style={imgStyle} src={hinh3} alt="" />
-            </h3>
-          </div>
-        </Carousel>
-      </div>
+      <section className="section-banner">
+        <div style={{ margin: "0 100px" }}>
+          <Row>
+            <Col span={12}>
+              <p class="banner-text">
+                <LikeOutlined style={{ color: "#eda600", marginRight: 4 }} />
+                100% Trusted and Reliable Car Sales Platform in the World
+              </p>
+              <h1 style={{ fontSize: 62, lineHeight: 1 }}>
+                Find Your Best <br></br>
+                <span style={{ color: "#eda600" }}>Your Dream Car Awaits</span>
+              </h1>
+              <p style={{ color: "#787878", fontSize: 16, marginTop: 5 }}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy
+                text ever since the 1500s
+              </p>
+              <Link to={"/cars"}>
+                <Button
+                  className="btn-banner"
+                  size="large"
+                  style={{
+                    marginTop: 10,
+                    width: "25%",
+                    border: "2px solid #201f1d",
+                    color: " #201f1d",
+                    backgroundColor: "#ffff",
+                    fontWeight: 500,
+                    fontSize: 15,
+                  }}
+                >
+                  View all Cars <ArrowRightOutlined />
+                </Button>
+              </Link>
+            </Col>
+            <Col span={12}>
+              <div class="banner-img">
+                <img src={carRight} alt="" style={{ maxWidth: "100%" }} />
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </section>
+
+      <section className="section-search">
+        <div
+          style={{
+            margin: "0 100px",
+            backgroundColor: "#fff",
+            position: "relative",
+            bottom: 40,
+            borderRadius: 16,
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+            padding: 20,
+          }}
+        >
+          <Form layout="vertical" onFinish={onFinish}>
+            <Row gutter={16} align="middle">
+              <Col span={6}>
+                <Form.Item
+                  label="Pickup Location"
+                  name="pickupLocation"
+                  rules={[{ required: true, message: "Please input!" }]}
+                >
+                  <Input placeholder="Enter location" />
+                </Form.Item>
+              </Col>
+
+              <Col span={6}>
+                <Form.Item
+                  label="Pickup Date"
+                  name="startDate"
+                  rules={[{ required: true, message: "Please select!" }]}
+                >
+                  <DatePicker
+                    showTime
+                    format="YYYY-MM-DD HH:mm"
+                    placeholder="Select date & time"
+                    style={{ width: "100%" }}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col span={6}>
+                <Form.Item
+                  label="Return Date"
+                  name="endDate"
+                  rules={[{ required: true, message: "Please select!" }]}
+                >
+                  <DatePicker
+                    showTime
+                    format="YYYY-MM-DD HH:mm"
+                    placeholder="Select date & time"
+                    style={{ width: "100%" }}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col span={6}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  size="large"
+                  style={{
+                    backgroundColor: "#ffa633",
+                    width: "100%",
+                    borderRadius: 8,
+                  }}
+                >
+                  <SearchOutlined /> Search
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </section>
       <section
         className="cars"
         style={{

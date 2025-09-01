@@ -155,10 +155,10 @@ const CarListPage = () => {
                   handleFilterChange({ priceRange: values })
                 }
               >
-                <Checkbox value={"duoi-1-trieu"}>Dưới 1 triệu</Checkbox>
-                <Checkbox value={"tu-1trieu-den-2trieu"}>1 - 2 triệu</Checkbox>
-                <Checkbox value={"tu-2trieu-den-5trieu"}>2 - 5 triệu</Checkbox>
-                <Checkbox value={"trên-5trieu"}>Trên 5 triệu</Checkbox>
+                <Checkbox value="duoi-1-trieu">Dưới 1 triệu</Checkbox>
+                <Checkbox value="tu-1trieu-den-2trieu">1 - 2 triệu</Checkbox>
+                <Checkbox value="tu-2trieu-den-5trieu">2 - 5 triệu</Checkbox>
+                <Checkbox value="trên-5trieu">Trên 5 triệu</Checkbox>
               </Checkbox.Group>
             </div>
 

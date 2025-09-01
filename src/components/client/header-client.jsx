@@ -4,12 +4,15 @@ import {
   AppstoreOutlined,
   CarOutlined,
   HomeOutlined,
+  LockOutlined,
   PhoneOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import reactLogo from "../../assets/react.svg";
+import reactLogo from "../../assets/logo.svg";
 import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
 import { useUserContext } from "../auth";
-import { callGetRentalByUserId } from "../../service/service-api";
+import "../../style/header.css";
+import { Children } from "react";
 
 const { Header } = Layout;
 
@@ -23,21 +26,25 @@ const HeaderClient = () => {
       label: <Link to={"/"}>Home</Link>,
       key: "/",
       icon: <HomeOutlined />,
+      className: "customclass",
     },
     {
-      label: "Cars",
-      key: "/car",
+      label: <Link to={"/cars"}>Cars</Link>,
+      key: "cars",
       icon: <CarOutlined />,
+      className: "customclass",
     },
     {
       label: "Pages",
       key: "history",
+      className: "customclass",
       icon: <AppstoreOutlined />,
     },
     {
       label: "Contact",
       key: "Contact",
       icon: <PhoneOutlined />,
+      className: "customclass",
     },
   ];
   let selectedKey = items[0].key; // default
@@ -84,6 +91,7 @@ const HeaderClient = () => {
     <>
       <Header
         style={{
+          // padding: "0 24px 0 50px",
           position: "fixed",
           top: 0,
           width: "100%",
@@ -95,26 +103,32 @@ const HeaderClient = () => {
             "0 1px 2px 0 rgba(0, 0, 0, 0.03),0 1px 6px -1px rgba(0, 0, 0, 0.02),0 2px 4px 0 rgba(0, 0, 0, 0.02)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <img
-            src={reactLogo}
-            alt="logo"
-            style={{
-              height: 40,
-              marginRight: 16,
-              animation: "spin 10s linear infinite",
-            }}
-          />
-          <span style={{ color: "black", fontSize: 20 }}>Rental Car</span>
+        <div>
+          <Link to={"/"} style={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={reactLogo}
+              alt="logo"
+              style={{
+                height: 40,
+                marginRight: 16,
+                animation: "spin 10s linear infinite",
+              }}
+            />
+          </Link>
         </div>
         <Menu
           theme="light"
           mode="horizontal"
           selectedKeys={selectedKey}
-          style={{ flex: 1, justifyContent: "center" }}
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            fontWeight: 600,
+            fontSize: 16,
+          }}
           items={items}
         />
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", marginRight: 8 }}>
           <Space>
             {user ? (
               <Dropdown
@@ -124,37 +138,36 @@ const HeaderClient = () => {
                 arrow={{ pointAtCenter: true }}
               >
                 <span style={{ cursor: "pointer" }}>
-                  <Avatar size={32}>{user.role.name}</Avatar>
+                  {user?.fullName} <Avatar size={32}>{user.role.name}</Avatar>
                 </span>
               </Dropdown>
             ) : (
-              <Button
-                type="primary"
-                shape="round"
-                size="middle"
-                style={{
-                  background: "#1890ff",
-                  borderColor: "#1890ff",
-                  fontWeight: 500,
-                  padding: "0 20px",
-                }}
-                onClick={() => navigate("/login")}
-              >
-                Đăng nhập
-              </Button>
+              <div>
+                <Space>
+                  <Button
+                    className="custom-btn-login"
+                    size="large"
+                    onClick={() => navigate("/login")}
+                  >
+                    <UserOutlined /> Đăng nhập
+                  </Button>
+
+                  <Button
+                    className="custom-btn-register"
+                    type="primary"
+                    size="large"
+                    onClick={() => navigate("/login")}
+                  >
+                    <LockOutlined /> Đăng ký
+                  </Button>
+                </Space>
+              </div>
             )}
           </Space>
         </div>
-
-        {/* CSS keyframes */}
-        <style>{`
-			@keyframes spin {
-			from { transform: rotate(0deg); }
-			to { transform: rotate(360deg); }
-			}
-		`}</style>
       </Header>
     </>
   );
 };
+
 export default HeaderClient;
