@@ -10,7 +10,6 @@ import {
 
 const CarPage = () => {
   const handleGetCar = async (params, sort, filter) => {
-    console.log(sort);
     const { current, pageSize, ...rest } = params;
 
     const query = {

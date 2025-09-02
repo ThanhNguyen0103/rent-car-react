@@ -228,6 +228,9 @@ const CarTable = ({
         available: values.available,
         carModel: { id: values.carModel.id },
         carImages: oldFiles,
+        year: values.year,
+        mileage: values.mileage,
+        fuelType: values.fuelType,
       };
 
       // Tạo FormData
@@ -397,6 +400,74 @@ const CarTable = ({
                 </Form.Item>
               </Col>
             </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="Fuel Type"
+                  name="fuelType"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng chọn loại nhiên liệu",
+                    },
+                  ]}
+                >
+                  <Select placeholder="Chọn loại nhiên liệu">
+                    <Select.Option value="HYBRID">HYBRID</Select.Option>
+                    <Select.Option value="GASOLINE">GASOLINE</Select.Option>
+                    <Select.Option value="DIESEL">DIESEL</Select.Option>
+                    <Select.Option value="ELECTRIC">ELECTRIC</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+
+              <Col span={12}>
+                <Form.Item
+                  label="Year"
+                  name="year"
+                  rules={[
+                    { required: true, message: "Vui lòng nhập năm sản xuất" },
+                  ]}
+                >
+                  <InputNumber
+                    placeholder="Nhập năm sản xuất"
+                    style={{ width: "100%" }}
+                    min={1990}
+                    max={new Date().getFullYear()}
+                    step={1} // mỗi lần tăng giảm +1
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="Mileage (KM)"
+                  name="mileage"
+                  rules={[
+                    { required: true, message: "Vui lòng nhập số km đã chạy" },
+                  ]}
+                >
+                  <InputNumber
+                    placeholder="Nhập số km"
+                    style={{ width: "100%" }}
+                    min={0}
+                    step={1000} // mỗi lần tăng giảm +1000 km
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="Location"
+                  name="location"
+                  rules={[
+                    { required: true, message: "Vui lòng nhập location" },
+                  ]}
+                >
+                  <Input placeholder="locaiton" />
+                </Form.Item>
+              </Col>
+            </Row>
 
             <Row gutter={16}>
               <Col span={12}>
@@ -406,9 +477,9 @@ const CarTable = ({
                   rules={[{ required: true, message: "Vui lòng nhập số chỗ" }]}
                 >
                   <Select>
-                    <Option value="4">4 chỗ</Option>
-                    <Option value="7">7 chổ</Option>
-                    <Option value="16">16 chỗ</Option>
+                    <Select.Option value="4">4 chỗ</Select.Option>
+                    <Select.Option value="7">7 chổ</Select.Option>
+                    <Select.Option value="16">16 chỗ</Select.Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -486,6 +557,75 @@ const CarTable = ({
                     formatter={(value) => `${value}₫`}
                     parser={(value) => value.replace("₫", "")}
                   />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="Fuel Type"
+                  name="fuelType"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng chọn loại nhiên liệu",
+                    },
+                  ]}
+                >
+                  <Select placeholder="Chọn loại nhiên liệu">
+                    <Select.Option value="HYBRID">HYBRID</Select.Option>
+                    <Select.Option value="GASOLINE">GASOLINE</Select.Option>
+                    <Select.Option value="DIESEL">DIESEL</Select.Option>
+                    <Select.Option value="ELECTRIC">ELECTRIC</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+
+              <Col span={12}>
+                <Form.Item
+                  label="Year"
+                  name="year"
+                  rules={[
+                    { required: true, message: "Vui lòng nhập năm sản xuất" },
+                  ]}
+                >
+                  <InputNumber
+                    placeholder="Nhập năm sản xuất"
+                    style={{ width: "100%" }}
+                    min={1990}
+                    max={new Date().getFullYear()}
+                    step={1} // mỗi lần tăng giảm +1
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="Mileage (KM)"
+                  name="mileage"
+                  rules={[
+                    { required: true, message: "Vui lòng nhập số km đã chạy" },
+                  ]}
+                >
+                  <InputNumber
+                    placeholder="Nhập số km"
+                    style={{ width: "100%" }}
+                    min={0}
+                    step={1000} // mỗi lần tăng giảm +1000 km
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="Location"
+                  name="location"
+                  rules={[
+                    { required: true, message: "Vui lòng nhập location" },
+                  ]}
+                >
+                  <Input placeholder="locaiton" />
                 </Form.Item>
               </Col>
             </Row>

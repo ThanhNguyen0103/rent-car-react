@@ -149,7 +149,7 @@ const HeaderClient = () => {
                     size="large"
                     onClick={() => navigate("/login")}
                   >
-                    <UserOutlined /> Đăng nhập
+                    <UserOutlined /> Sign In
                   </Button>
 
                   <Button
@@ -158,7 +158,7 @@ const HeaderClient = () => {
                     size="large"
                     onClick={() => navigate("/login")}
                   >
-                    <LockOutlined /> Đăng ký
+                    <LockOutlined /> Sign Up
                   </Button>
                 </Space>
               </div>
