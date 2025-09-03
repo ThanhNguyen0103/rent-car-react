@@ -14,20 +14,6 @@ const CarModelPage = () => {
     let size = params.pageSize;
     let sortField = Object.keys(sort)[0];
     let sortOrder = "";
-    // if (sortField === "fullName") {
-    //   sortOrder =
-    //     sort[sortField] === "ascend"
-    //       ? "&sort=fullName,asc"
-    //       : "&sort=fullName,desc";
-    // }
-    // if (sortField === "createdAt") {
-    //   sortOrder =
-    //     sort[sortField] === "ascend"
-    //       ? "&sort=createdAt,asc"
-    //       : "&sort=createdAt,desc";
-    // }
-
-    // let query = `page=${page}&size=${size}${sortOrder}`;
 
     let query = `page=${page}&size=${size}`;
     const res = await callGetCarModel(query);

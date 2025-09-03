@@ -2,7 +2,7 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Flex, message } from "antd";
 import { useUserContext } from "../components/auth";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import "../style/global.css";
 const LoginPage = () => {
   const { handleLogin } = useUserContext();
   const navigate = useNavigate();

@@ -118,3 +118,6 @@ export const callGetRefreshToken = () => {
 export const callGetLogout = () => {
   return instance.get("/api/v1/auth/logout");
 };
+export const callRegister = (value) => {
+  return instance.post("/api/v1/auth/register", value);
+};

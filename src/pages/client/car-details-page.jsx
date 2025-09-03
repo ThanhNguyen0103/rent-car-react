@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Card,
   Row,
   Col,
   Button,
-  Rate,
   Tag,
   Carousel,
   Input,
@@ -24,6 +22,7 @@ import {
   DownloadOutlined,
   EnvironmentOutlined,
 } from "@ant-design/icons";
+import "../../style/global.css";
 import breadcrumbleft from "../../assets/breadcrumbleft.png";
 import breadcrumbright from "../../assets/breadcrumbright.png";
 import { DatePicker } from "antd";
@@ -148,20 +147,22 @@ const CarDetailsPage = () => {
           }}
         >
           <div>
-            <h1>{car?.carModel?.name}</h1>
+            <h1>
+              {car?.carModel?.brand.name} {car?.carModel?.name}
+            </h1>
             <p style={{ fontSize: 16, margin: 4 }}>
-              <UserOutlined /> {car?.capacity} chỗ
+              <UserOutlined /> {car?.capacity} seats
             </p>
             <div style={{ fontSize: 16, margin: 4 }}>
-              <EnvironmentOutlined /> Vị trí : Quận 7 , Hồ Chí Minh
+              <EnvironmentOutlined /> Location : {car?.location}
             </div>
             <span style={{ margin: 4 }}>
               <Space>
                 <CalendarOutlined />
                 {car?.available ? (
-                  <Tag color="green">Còn xe</Tag>
+                  <Tag color="green">available</Tag>
                 ) : (
-                  <Tag color="red">Hết xe</Tag>
+                  <Tag color="red">Not Available</Tag>
                 )}
               </Space>
             </span>
@@ -177,7 +178,7 @@ const CarDetailsPage = () => {
             <span>
               <Space>
                 <DollarOutlined />
-                {car?.price.toLocaleString("vi-VN")} đ / ngày
+                {car?.price} / Day
               </Space>
             </span>
           </Button>
@@ -226,28 +227,27 @@ const CarDetailsPage = () => {
             </div>
             <Divider />
             <div>
-              <h2>Mô tả xe – {car?.carModel?.name}</h2>
+              <h2 className="description-text">
+                Car Description – {car?.carModel?.name}
+              </h2>
               <div>
-                <p style={{ marginTop: 10, fontSize: 16 }}>
-                  Mô tả xe – Hyundai Santa Fe 2.2 Diesel Hyundai Santa Fe 2.2
-                  Diesel là mẫu SUV 7 chỗ hiện đại, mang thiết kế mạnh mẽ và
-                  sang trọng.
+                <p
+                  className="description-text"
+                  style={{ marginTop: 10, padding: "0 10px 20px" }}
+                >
+                  The Hyundai Santa Fe 2.2 Diesel is a modern 7-seater SUV with
+                  a strong and elegant design.
+                  <br /> It is equipped with a fuel-efficient 2.2L diesel
+                  engine, paired with a smooth automatic transmission, providing
+                  a stable and comfortable driving experience. <br />
+                  The Hyundai Santa Fe 2.2 Diesel is ideal for families,
+                  long-distance travel, or business trips, offering reliable
+                  performance, fuel efficiency, and a comfortable driving feel.
                   <br />
-                  Xe được trang bị động cơ dầu 2.2L tiết kiệm nhiên liệu, kết
-                  hợp hộp số tự động mượt mà, cho cảm giác lái ổn định cả.
-                  Hyundai Santa Fe 2.2 Diesel Hyundai Santa Fe 2.2 Diesel là mẫu
-                  SUV 7 chỗ hiện đại, mang thiết kế mạnh mẽ và sang trọng. Xe
-                  được trang bị động cơ dầu 2.2L tiết kiệm nhiên liệu, kết hợp
-                  hộp số tự động mượt mà, cho cảm giác lái ổn định cả.
-                  <br />
-                  Xe phù hợp cho gia đình, đi du lịch đường dài hoặc công tác
-                  với khả năng vận hành ổn định, tiết kiệm và cảm giác lái thoải
-                  mái.
-                  <br />
-                  Bên cạnh đó, Santa Fe còn tích hợp các công nghệ an toàn tiên
-                  tiến như phanh ABS, hỗ trợ khởi hành ngang dốc, camera lùi và
-                  cảm biến va chạm, đảm bảo hành trình an toàn cho gia đình và
-                  bạn bè.
+                  Additionally, the Santa Fe integrates advanced safety
+                  technologies such as ABS brakes, hill-start assist, rearview
+                  camera, and collision sensors, ensuring a safe journey for
+                  your family and friends.
                 </p>
               </div>
             </div>
@@ -267,7 +267,7 @@ const CarDetailsPage = () => {
               <Descriptions
                 title={
                   <h4 style={{ textAlign: "center" }}>
-                    -- Thông số kỹ thuật --
+                    --Car Specifications --
                   </h4>
                 }
                 bordered
@@ -275,29 +275,27 @@ const CarDetailsPage = () => {
                 column={1}
                 style={{ marginTop: 8 }}
               >
-                <Descriptions.Item label="Hãng xe">
+                <Descriptions.Item label="Brand">
                   {car?.carModel?.brand?.name || "Hyundai"}
                 </Descriptions.Item>
                 <Descriptions.Item label="Model">
                   {car?.carModel?.name || "Santa Fe 2.2 Diesel"}
                 </Descriptions.Item>
-                <Descriptions.Item label="Số chỗ ngồi">
-                  {car?.capacity} chỗ
+                <Descriptions.Item label="Seats">
+                  {car?.capacity} seats
                 </Descriptions.Item>
-                <Descriptions.Item label="Động cơ">
-                  {car?.engine || "2.2L Diesel"}
+                <Descriptions.Item label="Power">
+                  {car?.engine || "2.2L Horse"}
                 </Descriptions.Item>
-                <Descriptions.Item label="Hộp số">
-                  {car?.transmission || "Tự động"}
+                <Descriptions.Item label="Transmission">
+                  {car?.transmission || "Manual"}
                 </Descriptions.Item>
-                <Descriptions.Item label="Nhiên liệu">
+                <Descriptions.Item label="Fuel Type">
                   {car?.fuelType || "Diesel"}
                 </Descriptions.Item>
-                <Descriptions.Item label="Màu sắc">
-                  {car?.color || "Trắng"}
-                </Descriptions.Item>
-                <Descriptions.Item label="Giá thuê">
-                  {car?.price?.toLocaleString("vi-VN")} đ / ngày
+
+                <Descriptions.Item label="Rental Fee">
+                  ${car?.price} / Day
                 </Descriptions.Item>
               </Descriptions>
             </div>
@@ -313,7 +311,7 @@ const CarDetailsPage = () => {
               }}
             >
               <Form.Item
-                label="Địa điểm nhận xe"
+                label="Pickup Location"
                 name="pickupLocation"
                 rules={[{ required: true, message: "Nhập nơi nhận xe!" }]}
               >
@@ -321,7 +319,7 @@ const CarDetailsPage = () => {
               </Form.Item>
 
               <Form.Item
-                label="Địa điểm trả xe"
+                label="Dropoff Location"
                 name="dropoffLocation"
                 rules={[{ required: true, message: "Nhập nơi trả xe!" }]}
               >
@@ -331,7 +329,7 @@ const CarDetailsPage = () => {
               <div style={{ display: "flex", gap: 8 }}>
                 <Form.Item
                   name="startDate"
-                  label="Chọn ngày bắt đầu "
+                  label="Start Date "
                   rules={[{ required: true, message: "Chọn ngày bắt đầu" }]}
                   getValueProps={(value) => ({
                     value: value ? dayjs(value) : "",
@@ -342,7 +340,7 @@ const CarDetailsPage = () => {
 
                 <Form.Item
                   name="endDate"
-                  label="Chọn ngày kết thúc "
+                  label="End Date "
                   rules={[
                     { required: true, message: "Chọn ngày kết thúc" },
                     ({ getFieldValue }) => ({
@@ -361,12 +359,17 @@ const CarDetailsPage = () => {
                     value: value ? dayjs(value) : "",
                   })}
                 >
-                  <DatePicker format="YYYY-MM-DD" />
+                  <DatePicker format="DD/MM/YYYY HH:mm" />
                 </Form.Item>
               </div>
 
-              <Button type="primary" htmlType="submit" block size="large">
-                Đặt xe
+              <Button
+                className="custom-btn-login"
+                htmlType="submit"
+                block
+                size="large"
+              >
+                Rent Now
               </Button>
             </Form>
           </Col>

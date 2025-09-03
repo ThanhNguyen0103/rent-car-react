@@ -3,12 +3,8 @@ import {
   CalendarOutlined,
   EnvironmentOutlined,
   FilterOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
   SearchOutlined,
   StarFilled,
-  StarOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -18,16 +14,13 @@ import {
   Checkbox,
   Col,
   Divider,
-  Form,
   Input,
   Layout,
   List,
-  Menu,
   message,
   Row,
-  theme,
 } from "antd";
-import titleHead from "../../assets/title-head.png";
+
 import carparts02 from "../../assets/car-parts-02.svg";
 import carparts03 from "../../assets/car-parts-03.svg";
 import carparts04 from "../../assets/car-parts-04.svg";
@@ -36,71 +29,17 @@ import carparts05 from "../../assets/car-parts-05.svg";
 import carparts01 from "../../assets/car-parts-01.svg";
 import breadcrumbleft from "../../assets/breadcrumbleft.png";
 import breadcrumbright from "../../assets/breadcrumbright.png";
-import { callGetCar } from "../../service/service-api";
+import {
+  callGetCar,
+  callGetCarBrand,
+  callGetCarModel,
+} from "../../service/service-api";
 import Meta from "antd/es/card/Meta";
 import { Link } from "react-router-dom";
 const { Content, Sider } = Layout;
 import { Collapse } from "antd";
 
 const CarListPage = () => {
-  const onChange = (key) => {
-    console.log(key);
-  };
-  const items = [
-    {
-      key: "1",
-      label: <span className="filter-label">Car Brand</span>,
-      children: (
-        <Checkbox.Group
-          style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
-        >
-          <Checkbox value="toyota">Toyota</Checkbox>
-          <Checkbox value="chevrolet">Chevrolet</Checkbox>
-          <Checkbox value="ford">Ford</Checkbox>
-        </Checkbox.Group>
-      ),
-    },
-    {
-      key: "2",
-      label: <span className="filter-label">Car Model</span>,
-      children: (
-        <Checkbox.Group
-          style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
-        >
-          <Checkbox value="toyota">Toyota</Checkbox>
-          <Checkbox value="chevrolet">Chevrolet</Checkbox>
-          <Checkbox value="ford">Ford</Checkbox>
-        </Checkbox.Group>
-      ),
-    },
-    {
-      key: "3",
-      label: <span className="filter-label">Fuel Type</span>,
-      children: (
-        <Checkbox.Group
-          style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
-        >
-          <Checkbox value="petrol">Petrol</Checkbox>
-          <Checkbox value="diesel">Diesel</Checkbox>
-          <Checkbox value="electric">Electric</Checkbox>
-        </Checkbox.Group>
-      ),
-    },
-    {
-      key: "4",
-      label: <span className="filter-label">Price</span>,
-      children: (
-        <Checkbox.Group
-          style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
-        >
-          <Checkbox value="petrol">Petrol</Checkbox>
-          <Checkbox value="diesel">Diesel</Checkbox>
-          <Checkbox value="electric">Electric</Checkbox>
-        </Checkbox.Group>
-      ),
-    },
-  ];
-
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -110,18 +49,37 @@ const CarListPage = () => {
   const [filters, setFilters] = useState({
     brands: [],
     Models: [],
-    priceRange: null,
+    priceRange: [],
   });
 
   const [car, setCar] = useState();
+  const [carModel, setCarModel] = useState();
+  const [brands, setBrands] = useState();
 
   useEffect(() => {
     handleGetCar();
+    handleGetCarModel();
+    handleGetBrand();
   }, []);
+  const handleGetBrand = async () => {
+    try {
+      const res = await callGetCarBrand();
 
+      if (res && res.data) {
+        setBrands(res.data.result);
+      }
+    } catch (error) {}
+  };
+  const handleGetCarModel = async () => {
+    try {
+      const res = await callGetCarModel();
+      if (res && res.data) {
+        setCarModel(res.data.result);
+      }
+    } catch (error) {}
+  };
   const handleGetCar = async (page, size, queryExtra) => {
     setLoading(true);
-
     try {
       let query = {
         page,
@@ -131,6 +89,7 @@ const CarListPage = () => {
       const res = await callGetCar(query);
       if (res.data && res.data.result) {
         setCar(res.data.result);
+
         setPagination({
           current: res.data.meta.currentPage,
           pageSize: res.data.meta.pageSize,
@@ -155,9 +114,9 @@ const CarListPage = () => {
       size: pagination.pageSize,
       price: filters.priceRange,
     };
-    console.log(query);
     await handleGetCar(query.page, query.size, query);
   };
+
   const abc = [
     [
       { icon: carparts01, text: "Manual" },
@@ -170,6 +129,84 @@ const CarListPage = () => {
       { icon: carparts06, text: "Persons" },
     ],
   ];
+
+  const items = [
+    {
+      key: "1",
+      label: <span className="filter-label">Car Brand</span>,
+      children: (
+        <Checkbox.Group
+          value={filters.brands}
+          style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
+          onChange={(values) => {
+            handleFilterChange({ brands: values });
+          }}
+        >
+          {brands?.slice(0, 5).map((item) => (
+            <Checkbox key={item.name} value={item.name}>
+              {item.name}
+            </Checkbox>
+          ))}
+        </Checkbox.Group>
+      ),
+    },
+    {
+      key: "2",
+      label: <span className="filter-label">Car Model</span>,
+      children: (
+        <Checkbox.Group
+          value={filters.Models}
+          onChange={(values) => {
+            handleFilterChange({ carModel: values });
+          }}
+          style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
+        >
+          {carModel?.slice(0, 5).map((item) => (
+            <Checkbox key={item.name} value={item.name}>
+              {item.name}
+            </Checkbox>
+          ))}
+        </Checkbox.Group>
+      ),
+    },
+    {
+      key: "3",
+      label: <span className="filter-label">Fuel Type</span>,
+      children: (
+        <Checkbox.Group
+          onChange={(values) => {
+            handleFilterChange({ fuleType: values });
+          }}
+          style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
+        >
+          <Checkbox value="HYBRID">HYBRID</Checkbox>
+          <Checkbox value="LPG">LPG</Checkbox>
+          <Checkbox value="GASOLINE">GASOLINE</Checkbox>
+          <Checkbox value="DIESEL">DIESEL</Checkbox>
+          <Checkbox value="ELECTRIC">ELECTRIC</Checkbox>
+        </Checkbox.Group>
+      ),
+    },
+    {
+      key: "4",
+      label: <span className="filter-label">Price</span>,
+      children: (
+        <Checkbox.Group
+          value={filters.priceRange}
+          onChange={(values) => {
+            handleFilterChange({ priceRange: values });
+          }}
+          style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
+        >
+          <Checkbox value="0-45">Below $45</Checkbox>
+          <Checkbox value="46-65">Between $45 and $65</Checkbox>
+          <Checkbox value="66-110">Between $65 and $110</Checkbox>
+          <Checkbox value="111-999">Above $110</Checkbox>
+        </Checkbox.Group>
+      ),
+    },
+  ];
+
   return (
     <Layout>
       <div
@@ -221,20 +258,24 @@ const CarListPage = () => {
           items={[
             {
               title: (
-                <Link to="/" style={{ color: "white" }}>
+                <Link to="/" style={{ color: "white", fontSize: 16 }}>
                   Home
                 </Link>
               ),
             },
             {
               title: (
-                <Link to="/cars" style={{ color: "white" }}>
+                <Link to="/cars" style={{ color: "white", fontSize: 16 }}>
                   Listing
                 </Link>
               ),
             },
             {
-              title: <span style={{ color: "orange" }}>Car Listings</span>,
+              title: (
+                <span style={{ color: "orange", fontSize: 16 }}>
+                  Car Listings
+                </span>
+              ),
             },
           ]}
         />
@@ -248,9 +289,20 @@ const CarListPage = () => {
             <div style={{ marginBottom: 10 }}>
               <Input
                 placeholder="Search ..."
-                prefix={<SearchOutlined style={{ color: "#999" }} />}
+                suffix={
+                  <SearchOutlined
+                    style={{ color: "#999" }}
+                    onClick={handleSubmitFilter}
+                  />
+                }
+                onPressEnter={handleSubmitFilter}
                 allowClear
-                onChange={(e) => handleFilterChange({ brand: e.target.value })}
+                onChange={(e) => {
+                  handleFilterChange({
+                    brands: e.target.value,
+                    Models: e.target.value,
+                  });
+                }}
                 style={{
                   marginTop: 8,
                   borderRadius: 8,
@@ -273,6 +325,9 @@ const CarListPage = () => {
               className="custom-btn-login"
               size="large"
               style={{ width: "100%" }}
+              onClick={() => {
+                handleSubmitFilter();
+              }}
             >
               <FilterOutlined /> Filter Results
             </Button>
@@ -284,6 +339,7 @@ const CarListPage = () => {
                 color: "red",
                 border: "none",
               }}
+              onClick={setFilters}
             >
               Reset Filter
             </Button>
@@ -300,6 +356,7 @@ const CarListPage = () => {
                   pageSize: 5,
                   total: pagination.total,
                   onChange: (page, size) => handleGetCar(page, size),
+                  style: { justifyContent: "center" },
                 }}
                 dataSource={car}
                 renderItem={(item) => (

@@ -164,19 +164,20 @@ const CheckoutPage = () => {
           <Col xs={24} lg={12}>
             <Card
               style={{ borderRadius: 16 }}
-              title={<Title level={4}>Thông tin khách hàng</Title>}
+              title={<Title level={4}>Customer Details</Title>}
             >
               <Form
                 layout="vertical"
                 onFinish={onFinish}
                 form={form}
                 initialValues={user}
+                style={{ padding: 18 }}
               >
                 <Form.Item label="ID" name="id" hidden>
                   <Input />
                 </Form.Item>
                 <Form.Item
-                  label="Họ và tên"
+                  label="Name"
                   name="fullName"
                   rules={[{ required: true, message: "Vui lòng nhập họ tên" }]}
                 >
@@ -195,7 +196,7 @@ const CheckoutPage = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label="Số điện thoại"
+                  label="Phone"
                   name="phone"
                   rules={[
                     { required: true, message: "Vui lòng nhập số điện thoại" },
@@ -207,8 +208,13 @@ const CheckoutPage = () => {
                 <Divider />
 
                 <Form.Item>
-                  <Button type="primary" htmlType="submit" size="large" block>
-                    Thanh toán ngay
+                  <Button
+                    className="custom-btn-login"
+                    htmlType="submit"
+                    size="large"
+                    block
+                  >
+                    Make Payment Now
                   </Button>
                 </Form.Item>
               </Form>
@@ -218,35 +224,37 @@ const CheckoutPage = () => {
           <Col xs={24} lg={12}>
             <Card
               style={{ borderRadius: 16 }}
-              title={<Title level={5}>Tóm tắt đặt xe</Title>}
+              title={<Title level={5}>Booking Summary</Title>}
             >
               <Descriptions column={1} bordered size="small">
-                <Descriptions.Item label="Tên xe">
+                <Descriptions.Item label="Models">
                   {values?.car?.carModel?.name}
                 </Descriptions.Item>
-                <Descriptions.Item label="Địa điểm nhận xe">
+                <Descriptions.Item label="Pickup Location">
                   {values?.pickupLocation}
                 </Descriptions.Item>
-                <Descriptions.Item label="Địa điểm trả xe">
+                <Descriptions.Item label="Dropoff Location">
                   {values?.dropoffLocation}
                 </Descriptions.Item>
-                <Descriptions.Item label="Ngày nhận">
+                <Descriptions.Item label="Start Date">
                   {values?.startDate
                     ? dayjs(values.startDate).format("DD/MM/YYYY HH:mm")
                     : ""}
                 </Descriptions.Item>
-                <Descriptions.Item label="Ngày trả">
+                <Descriptions.Item label="Return Date">
                   {values?.endDate
                     ? dayjs(values.endDate).format("DD/MM/YYYY HH:mm")
                     : ""}
                 </Descriptions.Item>
-                <Descriptions.Item label="Đơn giá">
+                <Descriptions.Item label="Price per Car">
                   <span>{values?.car?.price?.toLocaleString() || 0}</span>
                   {values && ` VND / ngày`}
                 </Descriptions.Item>
-                <Descriptions.Item label="Số ngày">{days}</Descriptions.Item>
-                <Descriptions.Item label="Tạm tính">
-                  <b>{totalPrice.toLocaleString("vi-VN") || 0} VND</b>
+                <Descriptions.Item label="Rental Days">
+                  {days}
+                </Descriptions.Item>
+                <Descriptions.Item label="Subtotal">
+                  <b>{totalPrice || 0} $</b>
                 </Descriptions.Item>
               </Descriptions>
             </Card>

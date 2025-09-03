@@ -31,7 +31,7 @@ const ComfirmPage = () => {
             width: 393,
             height: 334,
             backgroundSize: "cover",
-            zIndex: 0, // để nằm dưới text
+            zIndex: 0,
           }}
         />
         <div
@@ -87,41 +87,44 @@ const ComfirmPage = () => {
         <Card style={{ maxWidth: 600, width: "100%", borderRadius: 16 }}>
           <Result
             status="success"
-            title="Đặt hàng thành công!"
-            subTitle={`Cảm ơn bạn đã sử dụng dịch vụ. Đơn hàng #RC-${booking.id} đã được xác nhận.`}
+            title="Booking Successful ."
+            subTitle={`Your booking #RC-${booking.id} has been confirmed.`}
           />
 
           <Descriptions
-            title="Chi tiết giao dịch"
+            title=" Payment Details"
             bordered
             column={1}
             size="middle"
-            style={{ marginBottom: 24 }}
+            style={{ marginBottom: 24, padding: 20 }}
           >
-            <Descriptions.Item label="Mã đơn hàng">
+            <Descriptions.Item label="Order ID">
               #RC - {booking.id}
             </Descriptions.Item>
-            <Descriptions.Item label="Số tiền">
-              {booking.totalPrice.toLocaleString("vi-VN")} VND
+            <Descriptions.Item label="Total Amount">
+              {booking.totalPrice}$
             </Descriptions.Item>
-            <Descriptions.Item label="Phương thức thanh toán">
-              Cash
-            </Descriptions.Item>
-            <Descriptions.Item label="Thời gian">
+            <Descriptions.Item label="Payment Method">Cash</Descriptions.Item>
+            <Descriptions.Item label="Date & Time">
               {booking.createdAt.toLocaleString("vi-VN")}
             </Descriptions.Item>
-            <Descriptions.Item label="Trạng thái">
+            <Descriptions.Item label="Status">
               {booking.status}
             </Descriptions.Item>
           </Descriptions>
 
-          <div style={{ display: "flex", justifyContent: "center", gap: 16 }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: 16,
+              paddingBottom: 24,
+            }}
+          >
             <Button type="primary" onClick={() => navigate("/")}>
-              Về trang chủ
+              Home
             </Button>
-            <Button onClick={() => navigate("/history")}>
-              Đơn hàng của tôi
-            </Button>
+            <Button onClick={() => navigate("/history")}>My Orders</Button>
           </div>
         </Card>
       </div>

@@ -316,11 +316,6 @@ const UserTable = ({
                       max: 99,
                       message: "Tuổi từ 18 đến 99",
                     },
-                    // {
-                    //   min: 18,
-                    //   max: 99,
-                    //   message: "Tuổi từ 18 đến 99",
-                    // },
                   ]}
                   label="Tuổi"
                   name="age"

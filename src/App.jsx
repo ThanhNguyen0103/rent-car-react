@@ -18,6 +18,7 @@ import { UserProvider } from "./components/auth";
 import ForbiddenPage from "./pages/error-page/FobidenPage";
 import RentalHistoryPage from "./pages/client/history-page";
 import CarListPage from "./pages/client/car-list-page";
+import RegisterForm from "./pages/register";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterForm />,
   },
   {
     path: "/forbidden",

@@ -28,36 +28,36 @@ const RentalHistoryPage = () => {
 
   const columns = [
     {
-      title: "Mã đơn",
+      title: "Order ID",
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "Xe",
+      title: "Car",
       dataIndex: "car",
       key: "car",
       render: (car) => `${car.carModel.name} `,
     },
     {
-      title: "Ngày thuê",
+      title: "Booking Date",
       dataIndex: "startDate",
       key: "startDate",
       render: (date) => dayjs(date).format("DD/MM/YYYY"),
     },
     {
-      title: "Ngày trả",
+      title: "Return Date",
       dataIndex: "endDate",
       key: "endDate",
       render: (date) => dayjs(date).format("DD/MM/YYYY"),
     },
     {
-      title: "Giá",
+      title: "Price",
       dataIndex: "totalPrice",
       key: "totalPrice",
-      render: (price) => `${price.toLocaleString()} VNĐ`,
+      render: (price) => `${price} $`,
     },
     {
-      title: "Trạng thái",
+      title: "Status",
       dataIndex: "status",
       key: "status",
       render: (status) => {
@@ -65,22 +65,22 @@ const RentalHistoryPage = () => {
         let label = status;
         if (status === "RESERVED") {
           color = "green";
-          label = "Đang đặt";
+          label = "RESERVED";
         }
         if (status === "PENDING") {
           label = "Đang chờ";
         }
         if (status === "COMPLETED") {
           color = "green";
-          label = "Hoàn tất";
+          label = "COMPLETED";
         }
         if (status === "CANCELED") {
           color = "red";
-          label = "Đã hủy";
+          label = "CANCELED";
         }
         if (status === "ONGOING") {
           color = "orange";
-          label = "Đang thuê";
+          label = "ĐONGOING ";
         }
         return <Tag color={color}>{label}</Tag>;
       },
@@ -153,7 +153,7 @@ const RentalHistoryPage = () => {
       <Card
         title={
           <h3 style={{ textAlign: "center", width: "100%", marginTop: 20 }}>
-            Lịch sử thuê xe
+            Rental History
           </h3>
         }
         className="shadow-md rounded-xl"
@@ -166,6 +166,8 @@ const RentalHistoryPage = () => {
             columns={columns}
             rowKey="id"
             pagination={{ pageSize: 5 }}
+            bordered
+            style={{ padding: 20 }}
           />
         )}
       </Card>

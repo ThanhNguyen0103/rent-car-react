@@ -3,6 +3,7 @@ import { Avatar, Button, Dropdown, Layout, Menu, Space } from "antd";
 import {
   AppstoreOutlined,
   CarOutlined,
+  HistoryOutlined,
   HomeOutlined,
   LockOutlined,
   PhoneOutlined,
@@ -131,16 +132,18 @@ const HeaderClient = () => {
         <div style={{ display: "flex", marginRight: 8 }}>
           <Space>
             {user ? (
-              <Dropdown
-                menu={{ items: itemsDropdown }}
-                trigger={["click"]}
-                placement="bottomRight"
-                arrow={{ pointAtCenter: true }}
-              >
-                <span style={{ cursor: "pointer" }}>
-                  {user?.fullName} <Avatar size={32}>{user.role.name}</Avatar>
-                </span>
-              </Dropdown>
+              <div>
+                <Dropdown
+                  menu={{ items: itemsDropdown }}
+                  trigger={["click"]}
+                  placement="bottomRight"
+                  arrow={{ pointAtRight: true }}
+                >
+                  <span style={{ cursor: "pointer" }}>
+                    {user?.fullName} <Avatar size={32}>{user.role.name}</Avatar>
+                  </span>
+                </Dropdown>
+              </div>
             ) : (
               <div>
                 <Space>
@@ -156,7 +159,7 @@ const HeaderClient = () => {
                     className="custom-btn-register"
                     type="primary"
                     size="large"
-                    onClick={() => navigate("/login")}
+                    onClick={() => navigate("/register")}
                   >
                     <LockOutlined /> Sign Up
                   </Button>
