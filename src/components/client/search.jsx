@@ -20,7 +20,7 @@ const SearchBox = ({ onFinish }) => {
             <Col span={6}>
               <Form.Item
                 label="Pickup Location"
-                name="pickupLocation"
+                name="location"
                 rules={[{ required: true, message: "Please input!" }]}
               >
                 <Input placeholder="Enter location" />

@@ -61,7 +61,9 @@ export const callGetCarModelById = (id) => {
   return instance.get(`/api/v1/car-models/${id}`);
 };
 export const callGetCarModel = (query) => {
-  return instance.get(`/api/v1/car-models?${query}`);
+  return instance.get(`/api/v1/car-models`, {
+    params: query,
+  });
   // return instance.get(`/api/v1/users`);
 };
 // export const callUpLoadFile = (formData) => {

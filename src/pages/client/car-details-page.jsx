@@ -189,11 +189,15 @@ const CarDetailsPage = () => {
           <Col
             xs={24}
             md={16}
-            style={{ backgroundColor: "#ffff", borderRadius: 10 }}
+            style={{
+              backgroundColor: "#ffff",
+              borderRadius: 10,
+              padding: "0 18px",
+            }}
           >
             <Carousel ref={carouselRef} style={{ marginTop: 18 }} autoplay>
               {car?.carImages.map((img, index) => (
-                <div key={index} style={{}}>
+                <div key={index}>
                   <img
                     src={`http://localhost:8080/storage/car_images/${img.url}`}
                     alt="car"
@@ -253,7 +257,6 @@ const CarDetailsPage = () => {
             </div>
           </Col>
 
-          {/* Thông tin chi tiết + Form đặt xe */}
           <Col xs={24} md={8}>
             <div
               style={{

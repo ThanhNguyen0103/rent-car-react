@@ -116,17 +116,16 @@ const CarListPage = () => {
     };
     await handleGetCar(query.page, query.size, query);
   };
-
-  const abc = [
+  const renderFeatures = (car) => [
     [
       { icon: carparts01, text: "Manual" },
-      { icon: carparts02, text: " 10km" },
-      { icon: carparts03, text: "Desizel" },
+      { icon: carparts02, text: `${car.mileage} KM` },
+      { icon: carparts03, text: car.fuelType },
     ],
     [
       { icon: carparts04, text: "Power" },
-      { icon: carparts05, text: "1980" },
-      { icon: carparts06, text: "Persons" },
+      { icon: carparts05, text: car.year },
+      { icon: carparts06, text: `${car.capacity} Persons` },
     ],
   ];
 
@@ -425,35 +424,34 @@ const CarListPage = () => {
                               }}
                             ></div>
                             <Divider style={{ margin: "12px 0" }} />
-                            <div>
-                              {abc.map((row, rowIndex) => (
-                                <Row
-                                  key={rowIndex}
-                                  gutter={[16, 16]}
-                                  style={{ marginBottom: 6 }}
-                                >
-                                  {row.map((item, colIndex) => (
-                                    <Col key={colIndex} span={8}>
-                                      <div
-                                        style={{
-                                          display: "flex",
-                                          alignItems: "center",
-                                          fontSize: 14,
-                                          color: "#555",
-                                        }}
-                                      >
-                                        <img
-                                          src={item.icon}
-                                          alt={item.text}
-                                          style={{ marginRight: 6, width: 20 }}
-                                        />
-                                        <span>{item.text}</span>
-                                      </div>
-                                    </Col>
-                                  ))}
-                                </Row>
-                              ))}
-                            </div>
+
+                            {renderFeatures(item).map((row, rowIndex) => (
+                              <Row
+                                key={rowIndex}
+                                gutter={[16, 16]}
+                                style={{ marginBottom: 6, padding: "0 4px" }}
+                              >
+                                {row.map((item, colIndex) => (
+                                  <Col key={colIndex} span={8}>
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        fontSize: 14,
+                                        color: "#555",
+                                      }}
+                                    >
+                                      <img
+                                        src={item.icon}
+                                        alt={item.text}
+                                        style={{ marginRight: 6, width: 20 }}
+                                      />
+                                      <span>{item.text}</span>
+                                    </div>
+                                  </Col>
+                                ))}
+                              </Row>
+                            ))}
                             <div
                               style={{
                                 backgroundColor: "#F2F7F6",
@@ -484,7 +482,7 @@ const CarListPage = () => {
                                 <span>/ Day </span>
                               </div>
                             </div>
-                            <Link to={`/car/${car.id}`}>
+                            <Link to={`/cars/${item.id}`}>
                               <Button
                                 className="btn-rent-now"
                                 block
