@@ -1,20 +1,19 @@
-import { EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
-import ProTable, { TableDropdown } from "@ant-design/pro-table";
-import { Button, Divider, Dropdown, Space, Tag } from "antd";
-import React, { useRef } from "react";
-export const waitTimePromise = async (time = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
-export const waitTime = async (time = 100) => {
-  await waitTimePromise(time);
-};
+import { Card, Col, Row } from "antd";
 
 const Dashboard = () => {
-  return <div>dashboard</div>;
+  return (
+    <Row gutter={16}>
+      <Col span={8}>
+        <Card title="Tổng số Users">// todo</Card>
+      </Col>
+      <Col span={8}>
+        <Card title="Tổng số Rentals">//todo</Card>
+      </Col>
+      <Col span={8}>
+        <Card title="Tổng số Enrollments">//todo</Card>
+      </Col>
+    </Row>
+  );
 };
 
 export default Dashboard;

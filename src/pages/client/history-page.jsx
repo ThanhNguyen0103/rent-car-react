@@ -134,6 +134,7 @@ const RentalHistoryPage = () => {
             textAlign: "center",
             display: "flex",
             justifyContent: "center",
+            fontSize: 16,
           }}
           items={[
             {

@@ -77,7 +77,6 @@ const UserTable = ({
   };
   const cancel = (e) => {
     console.log(e);
-    // message.error("Click on No");
   };
 
   const showDrawer = async (id) => {
@@ -214,9 +213,6 @@ const UserTable = ({
           defaultValue: {
             option: { fixed: "right", disable: true },
           },
-          // onChange(value) {
-          //   console.log("value: ", value);
-          // },
         }}
         rowKey="id"
         search={{
@@ -240,7 +236,6 @@ const UserTable = ({
         }}
         pagination={{
           pageSize: 10,
-          // onChange: (page) => console.log(page),
         }}
         dateFormatter="string"
         headerTitle="User Table"
@@ -473,9 +468,6 @@ const UserTable = ({
             <Descriptions.Item label="Role">
               {user?.role?.name}
             </Descriptions.Item>
-            {/* <Descriptions.Item label="Trạng thái">
-              {user?.active ? "Active" : "Inactive"}
-            </Descriptions.Item> */}
           </Descriptions>
         ) : (
           <p>Không có dữ liệu user</p>

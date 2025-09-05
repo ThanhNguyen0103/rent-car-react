@@ -12,14 +12,13 @@ import {
   Select,
   Space,
 } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { callGetCarBrand } from "../../service/service-api";
 const CarModelTable = ({
   handleGetCarModel,
   handleUpdateCarModel,
   handleCreateCarModel,
   handleDeleteCarModel,
-  handleGetCarModelById,
 }) => {
   const actionRef = useRef();
   const [formSubmit] = Form.useForm();
@@ -113,11 +112,6 @@ const CarModelTable = ({
     await handleDeleteCarModel(id);
     actionRef.current.reload();
   };
-  const cancel = (e) => {
-    console.log(e);
-    // message.error("Click on No");
-  };
-  // ------
 
   const handleSubmit = async () => {
     try {
@@ -166,9 +160,6 @@ const CarModelTable = ({
           defaultValue: {
             option: { fixed: "right", disable: true },
           },
-          // onChange(value) {
-          //   console.log("value: ", value);
-          // },
         }}
         rowKey="id"
         search={{
@@ -192,7 +183,6 @@ const CarModelTable = ({
         }}
         pagination={{
           pageSize: 10,
-          // onChange: (page) => console.log(page),
         }}
         dateFormatter="string"
         headerTitle="Danh sách mẫu xe"
@@ -236,7 +226,7 @@ const CarModelTable = ({
                     optionFilterProp="children"
                   >
                     {brand
-                      ?.filter((item) => !item.isHidden) // isHidden = true → ẩn
+                      ?.filter((item) => !item.isHidden)
                       .map((item) => (
                         <Select.Option key={item.id} value={item.id}>
                           {item?.name}

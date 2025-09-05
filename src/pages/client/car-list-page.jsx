@@ -352,7 +352,7 @@ const CarListPage = () => {
                 size="large"
                 pagination={{
                   current: pagination.current,
-                  pageSize: 5,
+                  pageSize: 6,
                   total: pagination.total,
                   onChange: (page, size) => handleGetCar(page, size),
                   style: { justifyContent: "center" },

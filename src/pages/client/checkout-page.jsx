@@ -134,6 +134,7 @@ const CheckoutPage = () => {
             textAlign: "center",
             display: "flex",
             justifyContent: "center",
+            fontSize: 16,
           }}
           items={[
             {
@@ -164,7 +165,7 @@ const CheckoutPage = () => {
           <Col xs={24} lg={12}>
             <Card
               style={{ borderRadius: 16 }}
-              title={<Title level={4}>Customer Details</Title>}
+              title={<Title level={5}>Customer Details</Title>}
             >
               <Form
                 layout="vertical"
@@ -247,8 +248,8 @@ const CheckoutPage = () => {
                     : ""}
                 </Descriptions.Item>
                 <Descriptions.Item label="Price per Car">
-                  <span>{values?.car?.price?.toLocaleString() || 0}</span>
-                  {values && ` VND / ngày`}
+                  <span>{values?.car?.price || 0}</span>
+                  {values && ` $ /day`}
                 </Descriptions.Item>
                 <Descriptions.Item label="Rental Days">
                   {days}

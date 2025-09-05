@@ -9,16 +9,13 @@ import {
   Modal,
   Popconfirm,
   Row,
-  Select,
   Space,
 } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 const CarBrandTable = ({
   handleGetCarBrand,
   handleUpdateCarBrand,
   handleCreateCarBrand,
-  handleDeleteCarBrand,
-  handleGetCarBrandById,
 }) => {
   const actionRef = useRef();
   const [formSubmit] = Form.useForm();
@@ -70,7 +67,7 @@ const CarBrandTable = ({
 
     {
       title: "Hãng xe",
-      dataIndex: "name", // lấy brand.name
+      dataIndex: "name",
       key: "name",
       align: "center",
       width: 150,
@@ -150,9 +147,6 @@ const CarBrandTable = ({
           defaultValue: {
             option: { fixed: "right", disable: true },
           },
-          // onChange(value) {
-          //   console.log("value: ", value);
-          // },
         }}
         rowKey="id"
         search={{
@@ -176,7 +170,6 @@ const CarBrandTable = ({
         }}
         pagination={{
           pageSize: 10,
-          // onChange: (page) => console.log(page),
         }}
         dateFormatter="string"
         headerTitle="Danh sách hãng xe"

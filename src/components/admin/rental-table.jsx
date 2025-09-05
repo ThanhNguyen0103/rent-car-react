@@ -29,7 +29,6 @@ const RentalTable = ({
 }) => {
   const actionRef = useRef();
   const [formSubmit] = Form.useForm();
-  const [formLayout, setFormLayout] = useState("vertical");
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [typeSubmit, setTypeSubmit] = useState("");
@@ -126,21 +125,21 @@ const RentalTable = ({
     },
     {
       title: "Điểm trả",
-      dataIndex: "dropoffLocation", // lấy brand.name
+      dataIndex: "dropoffLocation",
       key: "dropoffLocation",
       align: "center",
       hideInSearch: true,
     },
     {
       title: "Tổng giá tiền",
-      dataIndex: "totalPrice", // lấy brand.name
+      dataIndex: "totalPrice",
       key: "totalPrice",
       align: "center",
-      render: (price) => price?.toLocaleString("vi-VN") + " ₫",
+      render: (price) => `$${price}`,
     },
     {
       title: "Trạng thái",
-      dataIndex: "status", // lấy brand.name
+      dataIndex: "status",
       key: "status",
       align: "center",
       render: (status) => {
@@ -189,7 +188,6 @@ const RentalTable = ({
             onConfirm={() => {
               confirm(record.id);
             }}
-            onCancel={() => {}}
             okText="Yes"
             cancelText="No"
           >
@@ -225,9 +223,6 @@ const RentalTable = ({
           defaultValue: {
             option: { fixed: "right", disable: true },
           },
-          // onChange(value) {
-          //   console.log("value: ", value);
-          // },
         }}
         rowKey="id"
         search={{
@@ -251,7 +246,6 @@ const RentalTable = ({
         }}
         pagination={{
           pageSize: 10,
-          // onChange: (page) => console.log(page),
         }}
         dateFormatter="string"
         headerTitle="Danh sách đơn hàng"
@@ -287,15 +281,7 @@ const RentalTable = ({
           </Form>
         )}
         {typeSubmit === "update" && (
-          <Form
-            form={formSubmit}
-            // initialValues={{
-            //   startDate: rental?.startDate ? dayjs(rental.startDate) : null,
-            //   endDate: rental?.endDate ? dayjs(rental.endDate) : null,
-            // }}
-            layout="vertical"
-            className="car-form"
-          >
+          <Form form={formSubmit} layout="vertical" className="car-form">
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item name="status" label="Trạng thái">

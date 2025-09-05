@@ -1,12 +1,14 @@
-import { Avatar, Button, Dropdown, Layout, Menu, Space } from "antd";
+import { Avatar, Badge, Button, Dropdown, Layout, Menu, Space } from "antd";
 
 import {
   AppstoreOutlined,
   CarOutlined,
+  CommentOutlined,
   HistoryOutlined,
   HomeOutlined,
   LockOutlined,
   PhoneOutlined,
+  UserDeleteOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import reactLogo from "../../assets/logo.svg";
@@ -126,23 +128,40 @@ const HeaderClient = () => {
             justifyContent: "center",
             fontWeight: 600,
             fontSize: 16,
+            marginRight: user ? 24 : 0,
           }}
           items={items}
         />
         <div style={{ display: "flex", marginRight: 8 }}>
           <Space>
             {user ? (
-              <div>
-                <Dropdown
-                  menu={{ items: itemsDropdown }}
-                  trigger={["click"]}
-                  placement="bottomRight"
-                  arrow={{ pointAtRight: true }}
-                >
-                  <span style={{ cursor: "pointer" }}>
-                    {user?.fullName} <Avatar size={32}>{user.role.name}</Avatar>
-                  </span>
-                </Dropdown>
+              <div
+                style={{
+                  display: "flex",
+                  minWidth: 110,
+
+                  alignItems: "center",
+                }}
+              >
+                <div>
+                  <Dropdown
+                    menu={{ items: itemsDropdown }}
+                    trigger={["click"]}
+                    placement="bottomRight"
+                    arrow={{ pointAtCenter: true }}
+                  >
+                    <span style={{ cursor: "pointer", marginRight: 6 }}>
+                      <Avatar size={36} style={{ backgroundColor: "black" }}>
+                        <UserOutlined />
+                      </Avatar>
+                    </span>
+                  </Dropdown>
+                </div>
+                <Badge count={0} showZero>
+                  <CommentOutlined
+                    style={{ fontSize: 34, cursor: "pointer" }}
+                  />
+                </Badge>
               </div>
             ) : (
               <div>

@@ -20,7 +20,6 @@ export const callGetUser = (query) => {
   return instance.get(`/api/v1/users`, {
     params: query,
   });
-  // return instance.get(`/api/v1/users`);
 };
 // --- module car
 export const callCreateCar = (formData) => {
@@ -64,13 +63,8 @@ export const callGetCarModel = (query) => {
   return instance.get(`/api/v1/car-models`, {
     params: query,
   });
-  // return instance.get(`/api/v1/users`);
 };
-// export const callUpLoadFile = (formData) => {
-//   return instance.post("/files/upload", formData, {
-//     headers: { "Content-Type": "multipart/form-data" },
-//   });
-// };
+
 // --- module brands
 export const callCreateCarBrand = (value) => {
   return instance.post("/api/v1/brands", value);
@@ -86,7 +80,6 @@ export const callGetCarBrandById = (id) => {
 };
 export const callGetCarBrand = (query) => {
   return instance.get(`/api/v1/brands?${query}`);
-  // return instance.get(`/api/v1/users`);
 };
 // --------- module rental
 export const callCreateRental = (value) => {
@@ -105,7 +98,6 @@ export const callGetRental = (query) => {
   return instance.get(`/api/v1/rentals`, {
     params: query,
   });
-  // return instance.get(`/api/v1/users`);
 };
 // ------ module auth
 export const callApiLogin = (value) => {

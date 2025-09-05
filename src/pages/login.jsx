@@ -10,17 +10,21 @@ const LoginPage = () => {
   const from = location.state?.from?.pathname || "/";
   const onFinish = async ({ username, password }) => {
     const res = await handleLogin({ username, password });
+    if (res.role.name == "ADMIN") {
+      navigate("/admin");
+      return;
+    }
     res ? navigate(from, { replace: true }) : "";
   };
 
   return (
     <div
       style={{
-        minHeight: "100vh", // chiếm full màn hình
-        display: "flex", // dùng flexbox
-        justifyContent: "center", // căn giữa ngang
-        alignItems: "center", // căn giữa dọc
-        background: "#f5f5f5", // màu nền nhẹ
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "#f5f5f5",
         flexDirection: "column",
       }}
     >
@@ -79,7 +83,7 @@ const LoginPage = () => {
             </Button>
           </Form.Item>
           <span style={{ marginLeft: "20%" }}>
-            Don't have an account? <a href="">Sign up now!</a>
+            Don't have an account? <a href="/register">Sign up now!</a>
           </span>
         </Form>
       </div>

@@ -19,18 +19,17 @@ const RegisterForm = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
     message.error("Vui lòng kiểm tra lại thông tin!");
   };
 
   return (
     <div
       style={{
-        minHeight: "100vh", // chiếm full màn hình
-        display: "flex", // dùng flexbox
-        justifyContent: "center", // căn giữa ngang
-        alignItems: "center", // căn giữa dọc
-        background: "#f5f5f5", // màu nền nhẹ
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "#f5f5f5",
         flexDirection: "column",
       }}
     >

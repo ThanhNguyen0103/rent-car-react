@@ -6,8 +6,7 @@ import breadcrumbright from "../../assets/breadcrumbright.png";
 const ComfirmPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { booking } = location.state || {}; // lấy thông tin booking truyền kèm
-  console.log(booking);
+  const { booking } = location.state || {};
 
   return (
     <>
@@ -56,6 +55,7 @@ const ComfirmPage = () => {
             textAlign: "center",
             display: "flex",
             justifyContent: "center",
+            fontSize: 16,
           }}
           items={[
             {
@@ -76,6 +76,7 @@ const ComfirmPage = () => {
       </div>
       <div
         style={{
+          margin: 20,
           minHeight: "100vh",
           display: "flex",
           justifyContent: "center",

@@ -48,7 +48,7 @@ const CarList = ({ cars, handleGetCar }) => {
     { key: "Acura", label: "Acura", icon: caricon05 },
     { key: "Tesla", label: "Tesla", icon: caricon06 },
   ];
-  console.log(cars);
+
   return (
     <section
       className="cars"
@@ -155,7 +155,7 @@ const CarList = ({ cars, handleGetCar }) => {
                 <Meta
                   title={
                     <span style={{ fontSize: 18, fontWeight: 600 }}>
-                      {car.carModel?.brand.name} {car.carModel?.name}
+                      {car.carModel?.name}
                     </span>
                   }
                   description={

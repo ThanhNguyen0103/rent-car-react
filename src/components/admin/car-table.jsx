@@ -38,15 +38,13 @@ const CarTable = ({
 }) => {
   const actionRef = useRef();
   const [formSubmit] = Form.useForm();
-  const [formLayout, setFormLayout] = useState("vertical");
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [typeSubmit, setTypeSubmit] = useState("");
   const [listFile, setListFile] = useState([]);
   const [car, setCar] = useState();
   const [carModel, setCarModel] = useState();
-  const formatPrice = (price) =>
-    new Intl.NumberFormat("vi-VN").format(price) + " VNĐ";
+
   const columns = [
     {
       title: "STT",
@@ -72,8 +70,7 @@ const CarTable = ({
       key: "carModel",
       sorter: true,
       align: "center",
-      render: (_, record) =>
-        `${record.carModel?.brand.name} ${record.carModel.name}`,
+      render: (_, record) => ` ${record.carModel.name}`,
     },
     {
       title: "Available",
@@ -107,7 +104,7 @@ const CarTable = ({
       key: "price",
       align: "center",
       sorter: true,
-      render: (price) => formatPrice(price), // format giá ở đây
+      render: (price) => `$${price}`,
     },
     {
       title: "CreatedAt",
@@ -146,7 +143,6 @@ const CarTable = ({
             onConfirm={() => {
               confirm(record.id);
             }}
-            onCancel={() => {}}
             okText="Yes"
             cancelText="No"
           >
@@ -187,14 +183,7 @@ const CarTable = ({
     await handleDeleteCar(id);
     actionRef.current.reload();
   };
-  const cancel = (e) => {
-    console.log(e);
-    // message.error("Click on No");
-  };
-  // -------
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
+
   // -----
   const showDrawer = async (id) => {
     const res = await handleGetCarById(id);
@@ -231,6 +220,7 @@ const CarTable = ({
         year: values.year,
         mileage: values.mileage,
         fuelType: values.fuelType,
+        location: values.location,
       };
 
       // Tạo FormData
@@ -303,9 +293,6 @@ const CarTable = ({
           defaultValue: {
             option: { fixed: "right", disable: true },
           },
-          // onChange(value) {
-          //   console.log("value: ", value);
-          // },
         }}
         rowKey="id"
         search={{
@@ -329,7 +316,6 @@ const CarTable = ({
         }}
         pagination={{
           pageSize: 10,
-          // onChange: (page) => console.log(page),
         }}
         dateFormatter="string"
         headerTitle="Danh sách xe "
@@ -373,7 +359,7 @@ const CarTable = ({
                     optionFilterProp="children"
                   >
                     {carModel
-                      ?.filter((item) => !item.isHidden) // isHidden = true → ẩn
+                      ?.filter((item) => !item.isHidden)
                       .map((item) => (
                         <Select.Option key={item.id} value={item.id}>
                           {item?.name}
@@ -394,8 +380,8 @@ const CarTable = ({
                   <InputNumber
                     style={{ width: "100%" }}
                     min={0}
-                    formatter={(value) => `${value}₫`}
-                    parser={(value) => value.replace("₫", "")}
+                    formatter={(value) => `${value}$`}
+                    parser={(value) => value.replace("$", "")}
                   />
                 </Form.Item>
               </Col>
@@ -434,7 +420,7 @@ const CarTable = ({
                     style={{ width: "100%" }}
                     min={1990}
                     max={new Date().getFullYear()}
-                    step={1} // mỗi lần tăng giảm +1
+                    step={1}
                   />
                 </Form.Item>
               </Col>
@@ -452,7 +438,7 @@ const CarTable = ({
                     placeholder="Nhập số km"
                     style={{ width: "100%" }}
                     min={0}
-                    step={1000} // mỗi lần tăng giảm +1000 km
+                    step={1000}
                   />
                 </Form.Item>
               </Col>
@@ -595,7 +581,7 @@ const CarTable = ({
                     style={{ width: "100%" }}
                     min={1990}
                     max={new Date().getFullYear()}
-                    step={1} // mỗi lần tăng giảm +1
+                    step={1}
                   />
                 </Form.Item>
               </Col>
@@ -613,7 +599,7 @@ const CarTable = ({
                     placeholder="Nhập số km"
                     style={{ width: "100%" }}
                     min={0}
-                    step={1000} // mỗi lần tăng giảm +1000 km
+                    step={1000}
                   />
                 </Form.Item>
               </Col>
@@ -694,7 +680,6 @@ const CarTable = ({
             column={1}
             size="middle"
             style={{ textAlign: "center" }}
-            // style={{ display: "flex", alignItems: "center" }}
           >
             <Descriptions.Item label="Tên xe">
               {car?.carModel?.brand?.name

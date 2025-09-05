@@ -19,7 +19,7 @@ const HomePage = () => {
   const handleGetCar = async (value) => {
     const query = {
       page: 1,
-      size: 10,
+      size: 6,
       location: value?.location,
       brand: value?.brand,
     };

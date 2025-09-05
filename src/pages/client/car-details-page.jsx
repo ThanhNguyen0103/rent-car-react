@@ -15,11 +15,9 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import {
-  CarOutlined,
   CalendarOutlined,
   DollarOutlined,
   UserOutlined,
-  DownloadOutlined,
   EnvironmentOutlined,
 } from "@ant-design/icons";
 import "../../style/global.css";
@@ -29,6 +27,11 @@ import { DatePicker } from "antd";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { callGetCarById } from "../../service/service-api";
 import { useUserContext } from "../../components/auth";
+import sliderthum01 from "../../assets/slider-thum-01.jpg";
+import sliderthum02 from "../../assets/slider-thum-02.jpg";
+import sliderthum03 from "../../assets/slider-thum-03.jpg";
+import sliderthum04 from "../../assets/slider-thum-04.jpg";
+import sliderthum05 from "../../assets/slider-thum-05.jpg";
 
 const { RangePicker } = DatePicker;
 const CarDetailsPage = () => {
@@ -36,6 +39,8 @@ const CarDetailsPage = () => {
   const navigate = useNavigate();
   const [car, setCar] = useState();
   const { saveBooking } = useUserContext();
+
+  const sliderthum = [sliderthum01, sliderthum02, sliderthum03];
 
   useEffect(() => {
     handleGetCarById(id);
@@ -74,7 +79,7 @@ const CarDetailsPage = () => {
       >
         <div
           style={{
-            content: '""', // với inline style thì content không cần
+            content: '""',
             background: `url(${breadcrumbleft}) no-repeat`,
             position: "absolute",
             bottom: 0,
@@ -82,7 +87,7 @@ const CarDetailsPage = () => {
             width: 393,
             height: 334,
             backgroundSize: "cover",
-            zIndex: 0, // để nằm dưới text
+            zIndex: 0,
           }}
         />
         <div
@@ -107,6 +112,7 @@ const CarDetailsPage = () => {
             textAlign: "center",
             display: "flex",
             justifyContent: "center",
+            fontSize: 16,
           }}
           items={[
             {
