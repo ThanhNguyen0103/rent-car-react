@@ -1,8 +1,9 @@
 # 🚗 Rental Car Frontend
 
-Ứng dụng frontend hiển thị danh sách xe cho thuê, được xây dựng bằng **React** và **Ant Design**.
-⚠️ Lưu ý: Repository này chỉ chứa frontend.  
-Backend (**car-rent-java**) cần chạy để frontend hoạt động đúng.
+- Ứng dụng frontend hiển thị danh sách xe cho thuê, được xây dựng bằng **React** và **Ant Design**.
+
+- ⚠️ Lưu ý: Repository này chỉ chứa frontend.  
+  Backend (**car-rent-java**) cần chạy để frontend hoạt động đúng.
 
 ## 📌 Công nghệ sử dụng
 
@@ -55,3 +56,27 @@ Backend (**car-rent-java**) cần chạy để frontend hoạt động đúng.
    ```bash
    npm start
    ```
+
+## 🖼️ Hình ảnh demo giao diện
+
+### Trang chủ
+
+![Trang chủ Rental Car](public/hinh1.png)
+
+### Trang chi tiết xe
+
+![Danh sách xe](public/hinh2.png)
+
+### Trang thông tin người dùng
+
+![Thông tin người dùng](public/hinh3.png)
+
+🚀 Hướng phát triển
+
+- Thêm Reposive ở mobile
+
+- Triển khai frontend lên Vercel/Netlify, backend lên Render/Heroku
+
+- Thêm review thực tế từ người dùng
+
+- Tối ưu performance và SEO
