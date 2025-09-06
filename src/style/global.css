@@ -88,6 +88,13 @@ background-color: #127384 !important;
   color: #555;
   margin: 4px 0;
 }
+.filter-collapse .ant-radio-wrapper{
+  font-size: 15px;
+  font-weight: 500;
+  color: #555;
+  margin: 4px 0;
+}
+
 
 /* Tăng size checkbox */
 .filter-collapse .ant-checkbox .ant-checkbox-inner {

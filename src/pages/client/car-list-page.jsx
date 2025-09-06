@@ -18,6 +18,7 @@ import {
   Layout,
   List,
   message,
+  Radio,
   Row,
 } from "antd";
 
@@ -48,12 +49,14 @@ const CarListPage = () => {
   });
   const [filters, setFilters] = useState({
     brands: [],
-    Models: [],
+    models: [],
     priceRange: [],
+    fuelType: [],
+    year: [],
   });
 
   const [car, setCar] = useState();
-  const [carModel, setCarModel] = useState();
+  const [models, setModels] = useState();
   const [brands, setBrands] = useState();
 
   useEffect(() => {
@@ -74,7 +77,7 @@ const CarListPage = () => {
     try {
       const res = await callGetCarModel();
       if (res && res.data) {
-        setCarModel(res.data.result);
+        setModels(res.data.result);
       }
     } catch (error) {}
   };
@@ -82,9 +85,9 @@ const CarListPage = () => {
     setLoading(true);
     try {
       let query = {
+        ...queryExtra,
         page,
         size,
-        ...queryExtra,
       };
       const res = await callGetCar(query);
       if (res.data && res.data.result) {
@@ -109,10 +112,12 @@ const CarListPage = () => {
   const handleSubmitFilter = async () => {
     const query = {
       brand: filters.brands,
-      carModel: filters.Models,
+      carModel: filters.models,
       page: pagination.current,
       size: pagination.pageSize,
       price: filters.priceRange,
+      fuelType: filters.fuelType,
+      year: filters.year,
     };
     await handleGetCar(query.page, query.size, query);
   };
@@ -154,13 +159,13 @@ const CarListPage = () => {
       label: <span className="filter-label">Car Model</span>,
       children: (
         <Checkbox.Group
-          value={filters.Models}
+          value={filters.models}
           onChange={(values) => {
-            handleFilterChange({ carModel: values });
+            handleFilterChange({ models: values });
           }}
           style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
         >
-          {carModel?.slice(0, 5).map((item) => (
+          {models?.slice(0, 5).map((item) => (
             <Checkbox key={item.name} value={item.name}>
               {item.name}
             </Checkbox>
@@ -172,18 +177,19 @@ const CarListPage = () => {
       key: "3",
       label: <span className="filter-label">Fuel Type</span>,
       children: (
-        <Checkbox.Group
-          onChange={(values) => {
-            handleFilterChange({ fuleType: values });
+        <Radio.Group
+          value={filters.fuelType}
+          onChange={(e) => {
+            handleFilterChange({ fuelType: e.target.value });
           }}
           style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
         >
-          <Checkbox value="HYBRID">HYBRID</Checkbox>
-          <Checkbox value="LPG">LPG</Checkbox>
-          <Checkbox value="GASOLINE">GASOLINE</Checkbox>
-          <Checkbox value="DIESEL">DIESEL</Checkbox>
-          <Checkbox value="ELECTRIC">ELECTRIC</Checkbox>
-        </Checkbox.Group>
+          <Radio value="HYBRID">HYBRID</Radio>
+          <Radio value="LPG">LPG</Radio>
+          <Radio value="GASOLINE">GASOLINE</Radio>
+          <Radio value="DIESEL">DIESEL</Radio>
+          <Radio value="ELECTRIC">ELECTRIC</Radio>
+        </Radio.Group>
       ),
     },
     {
@@ -201,6 +207,25 @@ const CarListPage = () => {
           <Checkbox value="46-65">Between $45 and $65</Checkbox>
           <Checkbox value="66-110">Between $65 and $110</Checkbox>
           <Checkbox value="111-999">Above $110</Checkbox>
+        </Checkbox.Group>
+      ),
+    },
+
+    {
+      key: "5",
+      label: <span className="filter-label">Year</span>,
+      children: (
+        <Checkbox.Group
+          value={filters.year}
+          onChange={(values) => {
+            handleFilterChange({ year: values });
+          }}
+          style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
+        >
+          <Checkbox value="2025">2025</Checkbox>
+          <Checkbox value="2024">2024</Checkbox>
+          <Checkbox value="2023">2023</Checkbox>
+          <Checkbox value="2022">2022</Checkbox>
         </Checkbox.Group>
       ),
     },
@@ -283,7 +308,12 @@ const CarListPage = () => {
         <Layout>
           <Sider
             width={280}
-            style={{ padding: 20, backgroundColor: "#fff", borderRadius: 10 }}
+            style={{
+              padding: 20,
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              height: "100%",
+            }}
           >
             <div style={{ marginBottom: 10 }}>
               <Input
@@ -299,7 +329,7 @@ const CarListPage = () => {
                 onChange={(e) => {
                   handleFilterChange({
                     brands: e.target.value,
-                    Models: e.target.value,
+                    models: e.target.value,
                   });
                 }}
                 style={{
@@ -347,14 +377,22 @@ const CarListPage = () => {
             <section className="cars">
               <List
                 loading={loading}
-                grid={{ gutter: 24, column: 2 }}
+                grid={{
+                  gutter: 24,
+                  xs: 1,
+                  sm: 1,
+                  md: 1,
+                  lg: 2,
+                  xl: 2,
+                  xxl: 2,
+                }}
                 itemLayout="vertical"
                 size="large"
                 pagination={{
                   current: pagination.current,
                   pageSize: 6,
                   total: pagination.total,
-                  onChange: (page, size) => handleGetCar(page, size),
+                  onChange: (page, size) => handleGetCar(page, size, filters),
                   style: { justifyContent: "center" },
                 }}
                 dataSource={car}
@@ -393,7 +431,7 @@ const CarListPage = () => {
                       <Meta
                         title={
                           <span style={{ fontSize: 18, fontWeight: 600 }}>
-                            {item.carModel?.brand.name} {item.carModel?.name}
+                            {item.carModel?.name}
                           </span>
                         }
                         description={

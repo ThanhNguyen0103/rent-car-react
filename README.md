@@ -1,8 +1,22 @@
-# React + Vite
+# 🚗 Rental Car Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ứng dụng frontend hiển thị danh sách xe cho thuê, được xây dựng bằng **React** và **Ant Design**.
 
-Currently, two official plugins are available:
+## 📌 Công nghệ sử dụng
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [React](https://react.dev/) (hooks, functional components)
+- [Ant Design](https://ant.design/) (UI library)
+- [React Router](https://reactrouter.com/) (điều hướng)
+- [Axios](https://axios-http.com/) (gọi API)
+- [Carousel](https://ant.design/components/carousel) (hiển thị nhiều ảnh xe)
+
+## ⚙️ Cài đặt
+
+1. Clone repo:
+   ```bash
+   git clone https://github.com/ThanhNguyen0103/rent-car-react.git
+   cd rent-car-react
+   ```
+2. Cài dependency:
+   - npm install
+3. Chạy ứng dụng
